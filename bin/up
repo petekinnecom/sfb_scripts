@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'up_script'
+
+Upper.up_master
