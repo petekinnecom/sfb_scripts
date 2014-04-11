@@ -2,4 +2,5 @@
 
 require 'up_script'
 
-Upper.up_master
+#Upper.up_master!
+Upper.rebase_on_master!

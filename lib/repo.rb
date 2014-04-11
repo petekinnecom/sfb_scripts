@@ -11,7 +11,9 @@ class Repo
   end
 
   def rebase_on_master!
-    rebase_origin_master
+    up do
+      shell.run "git pull --rebase origin master"
+    end
   end
 
   def up_master!
@@ -39,12 +41,6 @@ class Repo
     up do
       fetch_origin
       reset_hard_origin_master!
-    end
-  end
-
-  def rebase_origin_master!
-    up do
-      shell.run "git pull --rebase origin master"
     end
   end
 

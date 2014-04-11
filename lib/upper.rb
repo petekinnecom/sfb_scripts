@@ -19,8 +19,14 @@ class Upper
     @migrator = Migrator.new(shell: @shell, repo: @repo)
   end
 
-  def up_master
+  def up_master!
     repo.up_master!
+    bundler.bundle_where_necessary
+    migrator.migrate_where_necessary
+  end
+
+  def rebase_on_master!
+    repo.rebase_on_master!
     bundler.bundle_where_necessary
     migrator.migrate_where_necessary
   end
