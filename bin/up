@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'up_script'
+require 'upper'
 
-#Upper.up_master!
-Upper.rebase_on_master!
+#Upper.up(:up_master!)
+Upper.up(:rebase_on_master!)

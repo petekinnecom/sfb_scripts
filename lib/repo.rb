@@ -12,7 +12,13 @@ class Repo
 
   def rebase_on_master!
     up do
-      shell.run "git pull --rebase origin master"
+      # will raise an error with merge conflicts
+      begin
+        shell.run "git pull --rebase origin master"
+      rescue Shell::CommandFailureError
+        puts "There are rebase conflicts. :("
+        exit
+      end
     end
   end
 

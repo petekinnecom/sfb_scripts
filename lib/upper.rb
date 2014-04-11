@@ -5,10 +5,11 @@ require_relative 'bundle_manager'
 
 class Upper
 
-  def self.up_master
+  def self.up(function)
     Dir.chdir(Repo.root_dir)
-    new(Repo.root_dir).up_master
+    new(Repo.root_dir).send(function)
   end
+
 
   attr_reader :shell, :repo, :bundler, :migrator
 
