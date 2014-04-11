@@ -17,10 +17,10 @@ class BundleManager
   def bundle(gemfile_directory)
     puts "bundle install --local in #{gemfile_directory}"
     begin
-      shell.stream "bundle install --local", dir: gemfile_directory
+      shell.run "bundle install --local", dir: gemfile_directory
     rescue Shell::CommandFailureError
       puts 'trying without --local'
-      shell.stream "bundle install", dir: gemfile_directory
+      shell.run "bundle install", dir: gemfile_directory
     end
   end
 

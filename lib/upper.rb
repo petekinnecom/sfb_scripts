@@ -2,6 +2,8 @@ require_relative 'shell'
 require_relative 'repo'
 require_relative 'migrator'
 require_relative 'bundle_manager'
+require 'rubygems'
+require 'pry'
 
 class Upper
 

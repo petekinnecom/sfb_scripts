@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'upper'
+require_relative '../lib/upper'
 
-#Upper.up(:up_master!)
 Upper.up(:rebase_on_master!)
