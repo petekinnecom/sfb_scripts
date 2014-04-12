@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/tester'
+require 'thor'
+
+class CLI < Thor
+
+  #
+  # REBASE
+  #
+  desc "status", "Find dirty tests in your git status and run them"
+  def status
+    Tester.test(:test)
+  end
+
+  default_task :status
+
+
+end
+
+CLI.start(ARGV)

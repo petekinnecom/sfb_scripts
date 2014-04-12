@@ -15,6 +15,7 @@ class ShellRunner
 
   def run(cmd, dir: working_directory)
     command = "cd #{dir} && #{cmd}"
+    puts command
     %x{ set -o pipefail && #{command} 2>> #{LOG_PATH} | tee -a /tmp/up_log.txt }.chomp.tap do
       raise CommandFailureError, "The following command has failed: #{command}.  See /tmp/up_log.txt for a full log." if ($?.exitstatus != 0)
     end
