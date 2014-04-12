@@ -37,6 +37,7 @@ class CLI < Thor
   def no_git
     Upper.up(:no_git, loud_shell: !!options[:loud], lazy_repo: true)
   end
+  default_task :rebase
 end
 
 CLI.start(ARGV)

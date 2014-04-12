@@ -1,16 +1,16 @@
 Gem::Specification.new do |s|
   s.name = "dev_scripts"
-  s.version           = "0.0.1"
+  s.version           = "0.0.2"
 
   s.authors           = ["Pete Kinnecom"]
   s.description       = "Scripts that help stuff and things"
   s.email             = ["pete.kinnecom@appfolio.com"]
 
-  s.homepage          = "http://zombo.com"
+  s.homepage          = "http://petekinnecom.net"
   s.licenses          = ["MIT"]
   s.require_paths     = ["lib"]
   s.rubygems_version  = "1.8.24"
-  s.summary           = "Capybara Page Objects pattern"
+  s.summary           = "Scripts that help stuff and things"
 
   s.files             = `git ls-files -- lib`.split("\n")
   s.executables       << 'up'
