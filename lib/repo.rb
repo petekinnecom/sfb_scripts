@@ -15,8 +15,9 @@ class Repo
       # will raise an error with merge conflicts
       begin
         shell.run "git pull --rebase origin master"
-      rescue Shell::CommandFailureError
-        puts "There are rebase conflicts. :("
+      rescue ShellRunner::CommandFailureError
+        puts "Unable to rebase.  Maybe you need to stash local changes, or there are rebase conflicts"
+        puts `git status`
         exit
       end
     end
@@ -24,7 +25,7 @@ class Repo
 
   def up_master!
     move_to_master!
-    pull_origin_master!
+    rebase_on_master!
   end
 
   def files_changed

@@ -1,4 +1,4 @@
-require 'repo'
+require_relative 'repo'
 
 class LazyRepo < Repo
 
@@ -9,7 +9,7 @@ class LazyRepo < Repo
   private
 
   def all_files
-    shell.run "git ls-tree --full-tree -r HEAD --name-only".split("\n")
+    @all_files ||= shell.run("git ls-tree --full-tree -r HEAD --name-only").split("\n")
   end
 
 end

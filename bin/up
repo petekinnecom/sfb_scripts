@@ -1,5 +1,42 @@
 #!/usr/bin/env ruby
 
 require_relative '../lib/upper'
+require 'thor'
 
-Upper.up(:rebase_on_master!)
+class CLI < Thor
+
+  #
+  # REBASE
+  #
+
+  desc "rebase", "Rebase your commits onto master. Bundle installs and migrates as needed.  Will terminate if conflicts are found."
+  option :loud, :type => :boolean, :desc => 'Pipe output to terminal or not (output is always piped to /tmp/up_log.txt)'
+
+  def rebase
+    Upper.up(:rebase_on_master!, loud_shell: !!options[:loud])
+  end
+
+  #
+  # MASTER
+  #
+
+  desc "master", "Switch to master branch and pull to latest. Bundle installs and migrates as needed."
+  option :loud, :type => :boolean, :desc => 'Pipe output to terminal or not (output is always piped to /tmp/up_log.txt)'
+
+  def master
+    Upper.up(:up_master!, loud_shell: !!options[:loud])
+  end
+
+  #
+  # NO_GIT
+  #
+
+  desc "no_git", "Don't update the repo, just bundle install and migrate everything."
+  option :loud, :type => :boolean, :desc => 'Pipe output to terminal or not (output is always piped to /tmp/up_log.txt)'
+
+  def no_git
+    Upper.up(:no_git, loud_shell: !!options[:loud], lazy_repo: true)
+  end
+end
+
+CLI.start(ARGV)

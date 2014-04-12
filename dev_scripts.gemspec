@@ -15,6 +15,6 @@ Gem::Specification.new do |s|
   s.files             = `git ls-files -- lib`.split("\n")
   s.executables       << 'up'
 
-  #s.add_dependency('capybara', ['>= 1.1', '< 2.3'])
+  s.add_dependency('thor', ['>= 0.19', '< 1.0'])
 end
 
