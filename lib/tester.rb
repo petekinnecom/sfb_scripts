@@ -1,6 +1,7 @@
 require_relative 'needs_manager'
-require_relative 'test_grep_parser'
+require_relative 'test_collection'
 require_relative 'test_method_runner'
+require_relative 'test_file_runner'
 
 require 'rubygems'
 require 'pry'

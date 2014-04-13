@@ -36,6 +36,14 @@ class Repo
     files_changed.include? file_path
   end
 
+  def all_files
+    @all_files ||= shell.run("git ls-tree --full-tree -r HEAD --name-only").split("\n")
+  end
+
+  def find_files(pattern)
+    shell.run("git ls-files '*#{pattern}*'").split("\n")
+  end
+
   private
 
   def up

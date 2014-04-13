@@ -14,7 +14,10 @@ class TestMethodRunner
   end
 
   def run
-    if only_one_method_found
+
+    if tests.empty?
+      return false
+    elsif only_one_method_found
       TestRunner.run_method(tests.first)
     elsif all_in_one_file?
       TestRunner.run_file(tests.first)
@@ -67,10 +70,15 @@ class TestMethodRunner
 
   def find_tests_by_name
     test_def_regex = "def .*#{regex}.*"
-    results = repo.grep(test_def_regex, file_pattern: '*_test.rb')
+    begin
+      results = repo.grep(test_def_regex, file_pattern: '*_test.rb')
+    rescue ShellRunner::CommandFailureError
+      # git grep exits with 1 if no results
+      return []
+    end
 
     tests = results.map do |result|
-      TestGrepParser.parse(result)
+      TestCollection.parse(result)
     end.compact
   end
 
