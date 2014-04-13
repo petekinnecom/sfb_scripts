@@ -23,6 +23,7 @@ class TestGrepParser
       working_dir: working_dir,
       file: relative_file_path,
       test: test_name,
+      full_path: grep_result[:file],
     }
   end
 

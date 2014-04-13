@@ -6,14 +6,22 @@ require 'thor'
 class CLI < Thor
 
   #
-  # REBASE
+  # run
   #
   desc "status", "Find dirty tests in your git status and run them"
   def status
-    Tester.test(:test)
+    Tester.test(options)
   end
 
-  default_task :status
+  #
+  # run
+  #
+  desc "find", "Find a test and run it"
+  def find(input)
+    Tester.find(input, options)
+  end
+
+  default_task :test_run
 
 
 end

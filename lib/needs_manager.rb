@@ -2,6 +2,7 @@ require_relative 'shell_runner'
 require_relative 'loud_shell_runner'
 require_relative 'repo'
 require_relative 'lazy_repo'
+require_relative 'info_repo'
 require_relative 'migrator'
 require_relative 'bundle_manager'
 require_relative 'needs_manager'
@@ -12,22 +13,22 @@ class NeedsManager
     new(needs, options).configure
   end
 
-  attr_reader :needs, :options, :data
+  attr_reader :needs, :options, :env
   def initialize(needs, options)
     @needs = needs
     @options = options
-    @data = {}
+    @env = {}
   end
 
   def configure
     set_working_directory
 
-    create_shell if needs.include? :shell
+    create_shell
     create_repo if needs.include? :repo
     create_bundler if needs.include? :bundler
     create_migrator if needs.include? :migrator
 
-    return data
+    return env
   end
 
   def set_working_directory
@@ -37,7 +38,7 @@ class NeedsManager
 
   def create_shell
     ShellRunner.reset_log
-    data[:shell] = shell_class.new(@working_directory)
+    env[:shell] = shell_class.new(@working_directory)
   end
 
   def shell_class
@@ -49,7 +50,7 @@ class NeedsManager
   end
 
   def create_repo
-    data[:repo] = repo_class.new(shell: data[:shell])
+    env[:repo] = repo_class.new(shell: env[:shell])
   end
 
   def repo_class
@@ -63,10 +64,10 @@ class NeedsManager
   end
 
   def create_bundler
-    data[:bundler] = BundleManager.new(shell: data[:shell], repo: data[:repo])
+    env[:bundler] = BundleManager.new(shell: env[:shell], repo: env[:repo])
   end
 
   def create_migrator
-    data[:migrator] = Migrator.new(shell: data[:shell], repo: data[:repo])
+    env[:migrator] = Migrator.new(shell: env[:shell], repo: env[:repo])
   end
 end
