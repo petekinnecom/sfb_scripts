@@ -7,16 +7,8 @@ module TestRunner
     exec command
   end
 
-  def self.run_file(test)
-    command =  "cd #{test.working_dir} && ruby -I test #{test.file}"
-
-    puts command
-    exec command
-  end
-
-  #TODO
   def self.run_files(tests)
-    command =  "cd #{tests[:working_dir]} && ruby -I test -e \"ARGV.each{|f| require Dir.pwd + '/' + f}\" #{tests[:files].inject('') {|s, t| s + ' ' + t }}"
+    command =  "cd #{tests.working_dir} && ruby -I test -e \"ARGV.each{|f| require Dir.pwd + '/' + f}\" #{tests.files.inject('') {|s, t| s + ' ' + t }}"
 
     puts command
     exec command

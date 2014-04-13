@@ -15,8 +15,8 @@ class TestFileRunner
   end
 
   def run
-    files = repo.find_files(file)
-    tests = files.map {|f| TestCollection.from_file_path(f) }
-    TestRunner.run_file(tests.first)
+    files = repo.find_files(file).map {|f| {:file => f} }
+    tests = TestCollection.new(files)
+    TestRunner.run_files(tests)
   end
 end
