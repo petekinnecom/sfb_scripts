@@ -13,7 +13,7 @@ class CLI < Thor
   option :loud, :type => :boolean, :desc => 'Pipe output to terminal or not (output is always piped to /tmp/up_log.txt)'
 
   def rebase
-    Upper.up(:rebase_on_master!, loud_shell: !!options[:loud])
+    Upper.rebase_on_master!(options)
   end
 
   #
@@ -24,7 +24,7 @@ class CLI < Thor
   option :loud, :type => :boolean, :desc => 'Pipe output to terminal or not (output is always piped to /tmp/up_log.txt)'
 
   def master
-    Upper.up(:up_master!, loud_shell: !!options[:loud])
+    Upper.up_master!(options)
   end
 
   #
@@ -35,8 +35,9 @@ class CLI < Thor
   option :loud, :type => :boolean, :desc => 'Pipe output to terminal or not (output is always piped to /tmp/up_log.txt)'
 
   def no_git
-    Upper.up(:no_git, loud_shell: !!options[:loud], lazy_repo: true)
+    Upper.no_git(options)
   end
+
   default_task :rebase
 end
 

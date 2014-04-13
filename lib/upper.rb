@@ -1,30 +1,35 @@
-require_relative 'shell_runner'
-require_relative 'loud_shell_runner'
-require_relative 'repo'
-require_relative 'lazy_repo'
-require_relative 'migrator'
-require_relative 'bundle_manager'
+require_relative 'needs_manager'
 require 'rubygems'
 require 'pry'
 
 class Upper
 
-  def self.up(function, loud_shell: false, lazy_repo: false )
-    shell_class = loud_shell ? LoudShellRunner : ShellRunner
-    repo_class = lazy_repo ? LazyRepo : Repo
+  def self.needs
+    [:shell, :repo, :bundler, :migrator]
+  end
 
-    ShellRunner.reset_log
-    new(Repo.root_dir, shell_class, repo_class).send(function)
+  def self.rebase_on_master!(options)
+    env = NeedsManager.configure(needs, options)
+    new(env).rebase_on_master!
+  end
+
+  def self.up_master!(options)
+    env = NeedsManager.configure(needs, options)
+    new(env).up_master!
+  end
+
+  def self.no_git(options)
+    env = NeedsManager.configure(needs, options.merge(repo_type: :lazy))
+    new(env).no_git
   end
 
   attr_reader :shell, :repo, :bundler, :migrator
 
-  def initialize(root_dir, shell_class, repo_class)
-    Dir.chdir(root_dir)
-    @shell = shell_class.new(root_dir)
-    @repo = repo_class.new(shell: @shell)
-    @bundler = BundleManager.new(shell: @shell, repo: @repo)
-    @migrator = Migrator.new(shell: @shell, repo: @repo)
+  def initialize(env)
+    @shell = env[:shell]
+    @repo = env[:repo]
+    @bundler = env[:bundler]
+    @migrator = env[:migrator]
   end
 
   def up_master!
