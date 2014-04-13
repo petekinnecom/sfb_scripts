@@ -1,7 +1,7 @@
 class TestCase
   TestDirectoryError = Class.new(StandardError)
 
-  attr_reader :working_dir, :file, :test_name, :full_path
+  attr_reader :working_dir, :relative_path, :test_name, :full_path
 
   def initialize(full_path: raise, test_name: '')
     @test_name = test_name
@@ -17,8 +17,8 @@ class TestCase
       end
   end
 
-  def file
-    @file ||= full_path.gsub(/^#{working_dir}/, '') || raise_file_path_error
+  def relative_path
+    @relative_path ||= full_path.gsub(/^#{working_dir}/, '') || raise_file_path_error
   end
 
   def raise_file_path_error

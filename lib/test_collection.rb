@@ -53,8 +53,8 @@ class TestCollection
     @full_paths ||= tests.map {|t| t.full_path }.uniq
   end
 
-  def files
-    @files ||= tests.map {|t| t.file }.uniq
+  def relative_paths
+    @relative_paths ||= tests.map {|t| t.relative_path }.uniq
   end
 
   def working_dirs
