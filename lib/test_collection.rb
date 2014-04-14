@@ -61,6 +61,10 @@ class TestCollection
     @working_dirs ||= tests.map {|t| t.working_dir }.uniq
   end
 
+  def relative_paths_in(working_directory)
+    tests.select {|t| t.working_dir == working_directory}.map {|t| t.relative_path }.uniq
+  end
+
   def working_dir
     raise MultipleWorkingDirectoriesError.new("Can't run tests for more than one engine") unless working_dirs.size == 1
 

@@ -11,6 +11,7 @@ class ShellRunner
 
   def initialize(working_directory)
     @working_directory = working_directory
+    @queue = ''
   end
 
   def run(cmd, dir: working_directory)
@@ -26,6 +27,34 @@ class ShellRunner
 
     puts command
     Kernel.exec command
+  end
+
+  def enqueue(cmd, dir: working_directory)
+    command = "cd #{dir} && #{cmd} && cd -"
+    @queue += "#{command};\n"
+  end
+
+  def confirm(question)
+    answer = 'n'
+    announce do
+      puts "#{question} [Yn]"
+      answer = STDIN.gets.strip.downcase
+    end
+    return answer != 'n'
+  end
+
+  def exec_queue
+    announce do
+      puts @queue
+    end
+      Kernel.exec @queue
+  end
+
+  def announce(title=nil)
+    puts '----------------------------'
+    puts title unless title.nil?
+    yield
+    puts '----------------------------'
   end
 
 end
