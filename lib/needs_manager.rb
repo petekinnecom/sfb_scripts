@@ -74,6 +74,9 @@ class NeedsManager
   end
 
   def create_test_runner
-    env[:test_runner] = TestRunner.new(shell: env[:shell], all_engines: options[:all_engines])
+    env[:test_runner] = TestRunner.new(
+      shell: env[:shell],
+      all_engines: options[:all_engines]
+    )
   end
 end

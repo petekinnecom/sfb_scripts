@@ -8,15 +8,16 @@ class TestFileRunner
     new(env).run(file)
   end
 
-  def self.status(env)
-    new(env).status
+  def self.status(env, ignore_selenium=false)
+    new(env, ignore_selenium).status
   end
 
-  attr_reader :repo, :shell, :test_runner, :tests
-  def initialize(env)
+  attr_reader :repo, :shell, :test_runner, :tests, :ignore_selenium
+  def initialize(env, ignore_selenium)
     @repo = env[:repo]
     @shell = env[:shell]
     @test_runner = env[:test_runner]
+    @ignore_selenium = ignore_selenium
   end
 
   def find(file)
@@ -44,7 +45,7 @@ class TestFileRunner
   private
 
   def handle_selenium
-    if shell.deny?("The status includes some selenium files.  Do you wish to run those?")
+    if ignore_selenium || shell.deny?("The status includes some selenium files.  Do you wish to run those?")
       tests.remove_selenium!
     end
   end

@@ -19,7 +19,7 @@ class Tester
 
   def self.status(options)
     env = NeedsManager.configure(needs, options.merge(repo_type: :info))
-    new(env).status
+    new(env).status(options)
   end
 
   attr_accessor :env
@@ -36,8 +36,8 @@ class Tester
     TestFileRunner.find(input, env)
   end
 
-  def status
-    TestFileRunner.status(env)
+  def status(options)
+    TestFileRunner.status(env, options[:no_selenium])
   end
 
 
