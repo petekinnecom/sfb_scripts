@@ -65,6 +65,18 @@ class TestCollection
     tests.select {|t| t.working_dir == working_directory}.map {|t| t.relative_path }.uniq
   end
 
+  def include_selenium?
+    ! selenium_tests.empty?
+  end
+
+  def remove_selenium!
+    @tests = tests - selenium_tests
+  end
+
+  def selenium_tests
+    tests.select {|t| t.full_path.match(/selenium/)}
+  end
+
   def working_dir
     raise MultipleWorkingDirectoriesError.new("Can't run tests for more than one engine") unless working_dirs.size == 1
 

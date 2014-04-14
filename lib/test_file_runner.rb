@@ -12,7 +12,7 @@ class TestFileRunner
     new(env).status
   end
 
-  attr_reader :repo, :shell, :test_runner
+  attr_reader :repo, :shell, :test_runner, :tests
   def initialize(env)
     @repo = env[:repo]
     @shell = env[:shell]
@@ -21,18 +21,31 @@ class TestFileRunner
 
   def find(file)
     files = repo.find_files(file).map {|f| {:file => f} }
-    tests = TestCollection.new(files)
+    @tests = TestCollection.new(files)
     test_runner.run_files(tests)
   end
 
   def status
     files = repo.status_files.map {|f| {:file => f} }
-    tests = TestCollection.new(files)
+    @tests = TestCollection.new(files)
 
     if tests.empty?
-      puts 'No tests in status'
-    else
-      test_runner.run_files(tests)
+      shell.announce 'No tests in status'
+      exit
+    end
+
+    if tests.include_selenium?
+      handle_selenium
+    end
+
+    test_runner.run_files(tests)
+  end
+
+  private
+
+  def handle_selenium
+    if shell.deny?("The status includes some selenium files.  Do you wish to run those?")
+      tests.remove_selenium!
     end
   end
 end

@@ -35,13 +35,17 @@ class ShellRunner
     @queue += "#{command};\n"
   end
 
-  def confirm(question)
+  def confirm?(question)
     answer = 'n'
     announce do
       puts "#{question} [Yn]"
       answer = STDIN.gets.strip.downcase
     end
     return answer != 'n'
+  end
+
+  def deny?(question)
+    ! confirm?(question)
   end
 
   def exec_queue

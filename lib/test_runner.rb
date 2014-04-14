@@ -66,7 +66,7 @@ class TestRunner
   end
 
   def run_across_engines?
-    all_engines_param || shell.confirm("Test files are in multiple engines.  Run them all?")
+    all_engines_param || shell.confirm?("Test files are in multiple engines.  Run them all?")
   end
 
 end
