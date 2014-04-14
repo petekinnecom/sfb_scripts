@@ -1,41 +1,46 @@
-module TestRunner
+class TestRunner
 
-
-  def self.run_method(test)
-    command =  "cd #{test.working_dir} && #{named_test_runner(test.working_dir)} #{test.relative_path} --name=#{test.test_name}"
-
-    puts command
-    exec command
+  attr_reader :shell
+  def initialize(env)
+    @shell = env[:shell]
   end
 
-  def self.run_files(tests)
-    command =  "cd #{tests.working_dir} && #{test_collection_runner(tests.working_dir)} #{tests.relative_paths.inject('') {|s, t| s + ' ' + t }}"
+  def run_method(test)
+    test_runner = named_test_runner(test.working_dir)
 
-    puts command
-    exec command
+    shell.exec("#{test_runner} #{test.relative_path} --name=#{test.test_name}", dir: test.working_dir)
+  end
+
+  def run_files(tests)
+    test_runner = test_collection_runner(tests.working_dir)
+    test_files = tests.relative_paths.join(' ')
+
+    shell.exec("#{test_runner} #{test_files}", dir: tests.working_dir)
   end
 
   private
 
-  def self.test_runner_type(working_dir)
-    if %x{cd #{working_dir} && ls bin/}.split("\n").include? 'testunit'
+  def test_runner_type(working_dir)
+    if shell.run("ls bin", dir: working_dir).split("\n").include? 'testunit'
       :spring
     else
       :ruby
     end
   end
 
-  def self.named_test_runner(working_dir)
+  def named_test_runner(working_dir)
     if test_runner_type(working_dir) == :spring
-      'bin/testunit'
+      "bin/testunit"
+      "ruby -I test"
     else
       "ruby -I test"
     end
   end
 
-  def self.test_collection_runner(working_dir)
+  def test_collection_runner(working_dir)
     if test_runner_type(working_dir) == :spring
-      'bin/testunit'
+      "bin/testunit"
+      "ruby -I test"
     else
       "ruby -I test -e \"ARGV.each{|f| require Dir.pwd + '/' + f}\""
     end

@@ -6,6 +6,7 @@ require_relative 'info_repo'
 require_relative 'migrator'
 require_relative 'bundle_manager'
 require_relative 'needs_manager'
+require_relative 'test_runner'
 
 class NeedsManager
 
@@ -27,6 +28,7 @@ class NeedsManager
     create_repo if needs.include? :repo
     create_bundler if needs.include? :bundler
     create_migrator if needs.include? :migrator
+    create_test_runner if needs.include? :test_runner
 
     return env
   end
@@ -69,5 +71,9 @@ class NeedsManager
 
   def create_migrator
     env[:migrator] = Migrator.new(shell: env[:shell], repo: env[:repo])
+  end
+
+  def create_test_runner
+    env[:test_runner] = TestRunner.new(shell: env[:shell])
   end
 end

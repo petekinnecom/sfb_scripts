@@ -9,7 +9,7 @@ require 'pry'
 class Tester
 
   def self.needs
-    [:shell, :repo]
+    [:shell, :repo, :test_runner]
   end
 
   def self.find(input, options)
@@ -17,17 +17,18 @@ class Tester
     new(env).find(input)
   end
 
-  attr_accessor :shell, :repo
+  attr_accessor :env
   def initialize(env)
-    @shell = env[:shell]
-    @repo = env[:repo]
+    @env = env
   end
 
   def find(input)
     # each of these replaces this process if successful
     # so no need for logic control flow
-    TestMethodRunner.run(input, shell, repo)
-    TestFileRunner.run(input, shell, repo)
+    if ! input.match(/\.rb/)
+      TestMethodRunner.run(input, env)
+    end
+    TestFileRunner.run(input, env)
   end
 
 

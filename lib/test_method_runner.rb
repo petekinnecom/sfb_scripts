@@ -2,26 +2,28 @@ require_relative 'test_runner'
 
 class TestMethodRunner
 
-  def self.run(regex, shell,  repo)
-    new(regex, shell, repo).run
+  def self.run(regex, env)
+    new(env).run(regex)
   end
 
-  attr_reader :regex, :repo, :shell
-  def initialize(regex, shell, repo)
+  attr_reader :regex, :repo, :shell, :test_runner
+  def initialize(env)
+    @repo = env[:repo]
+    @shell = env[:shell]
+    @test_runner = env[:test_runner]
+  end
+
+  def run(regex)
     @regex = regex
-    @repo = repo
-    @shell = shell
-  end
 
-  def run
     if tests.empty?
       return false
     elsif tests.size == 1
-      TestRunner.run_method(tests.first)
+      test_runner.run_method(tests.first)
     elsif tests.in_one_file?
-      TestRunner.run_files(tests)
+      test_runner.run_files(tests)
     elsif tests.in_one_engine? && tests.full_paths.size < 4
-      TestRunner.run_files(tests)
+      test_runner.run_files(tests)
     else
       puts 'Found too many tests:'
       tests[0..10].each {|t| puts "#{t[:working_dir]}#{t[:file]}: #{t[:test]}" }

@@ -21,4 +21,11 @@ class ShellRunner
     end
   end
 
+  def exec(cmd, dir: working_directory)
+    command = "cd #{dir} && #{cmd}"
+
+    puts command
+    Kernel.exec command
+  end
+
 end
