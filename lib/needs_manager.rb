@@ -2,7 +2,7 @@ require_relative 'shell_runner'
 require_relative 'loud_shell_runner'
 require_relative 'repo'
 require_relative 'lazy_repo'
-require_relative 'info_repo'
+require_relative 'active_repo'
 require_relative 'migrator'
 require_relative 'bundle_manager'
 require_relative 'needs_manager'
@@ -56,8 +56,8 @@ class NeedsManager
   end
 
   def repo_class
-    if options[:repo_type] == :info
-      InfoRepo
+    if options[:repo_type] == :active
+      ActiveRepo
     elsif options[:repo_type] == :lazy
       LazyRepo
     else

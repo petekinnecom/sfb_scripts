@@ -9,12 +9,12 @@ class Upper
   end
 
   def self.rebase_on_master!(options)
-    env = NeedsManager.configure(needs, options)
+    env = NeedsManager.configure(needs, options.merge(repo_type: :active))
     new(env).rebase_on_master!
   end
 
   def self.up_master!(options)
-    env = NeedsManager.configure(needs, options)
+    env = NeedsManager.configure(needs, options.merge(repo_type: :active))
     new(env).up_master!
   end
 

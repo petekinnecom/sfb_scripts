@@ -10,24 +10,6 @@ class Repo
     @shell = shell
   end
 
-  def rebase_on_master!
-    up do
-      # will raise an error with merge conflicts
-      begin
-        shell.run "git pull --rebase origin master"
-      rescue ShellRunner::CommandFailureError
-        puts "Unable to rebase.  Maybe you need to stash local changes, or there are rebase conflicts"
-        puts `git status`
-        exit
-      end
-    end
-  end
-
-  def up_master!
-    move_to_master!
-    rebase_on_master!
-  end
-
   def files_changed
     @files_changed ||= (shell.run "git diff --name-only #{@old_sha}").split("\n")
   end
@@ -56,31 +38,24 @@ class Repo
     end.compact
   end
 
-  private
-
-  def up
-    @old_sha = current_sha
-    yield
-    @new_sha = current_sha
-  end
-
-  def pull_origin_master!
-    up do
-      fetch_origin
-      reset_hard_origin_master!
+  def grep(regex, file_pattern: '*')
+    results = shell.run("git grep '#{regex}' -- '#{file_pattern}'").split("\n")
+    results.map do |result|
+      interpret_grep_result(result)
     end
   end
 
-  def fetch_origin
-    shell.run 'git fetch origin'
-  end
+  private
 
-  def reset_hard_origin_master!
-    shell.run "git reset --hard origin/master"
-  end
+  def interpret_grep_result(grep_result)
+    splits = grep_result.split(/:/)
+    file = splits.shift
+    line = splits.join(':')
 
-  def move_to_master!
-    shell.run "git checkout master"
+    {
+      :file => file,
+      :line => line,
+    }
   end
 
   def current_sha
