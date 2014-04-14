@@ -1,6 +1,7 @@
 require_relative 'test_runner'
 require_relative 'test_collection'
 
+
 class TestFileRunner
 
   def self.find(file, env)
@@ -25,7 +26,13 @@ class TestFileRunner
   end
 
   def status
-    binding.pry
-    repo.status_files
+    files = repo.status_files.map {|f| {:file => f} }
+    tests = TestCollection.new(files)
+
+    if tests.empty?
+      puts 'No tests in status'
+    else
+      test_runner.run_files(tests)
+    end
   end
 end

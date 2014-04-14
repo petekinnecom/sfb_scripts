@@ -45,7 +45,15 @@ class Repo
   end
 
   def status_files
-    shell.run("git ls-files -m")
+    statii = shell.run("git status -s").split("\n")
+    r = statii.map do |status|
+      status.strip!
+      if status[0] == 'D'
+        nil
+      else
+        status[1..-1].strip
+      end
+    end.compact
   end
 
   private

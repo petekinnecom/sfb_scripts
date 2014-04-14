@@ -17,6 +17,11 @@ class Tester
     new(env).find(input)
   end
 
+  def self.status(options)
+    env = NeedsManager.configure(needs, options.merge(repo_type: :info))
+    new(env).status
+  end
+
   attr_accessor :env
   def initialize(env)
     @env = env

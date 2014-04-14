@@ -10,7 +10,7 @@ class CLI < Thor
   #
   desc "status", "Find dirty tests in your git status and run them"
   def status
-    Tester.test(options)
+    Tester.status(options)
   end
 
   #
