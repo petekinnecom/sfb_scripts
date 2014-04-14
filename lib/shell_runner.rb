@@ -1,3 +1,5 @@
+require_relative 'string_extension'
+
 class ShellRunner
   CommandFailureError = Class.new(StandardError)
 
@@ -38,7 +40,7 @@ class ShellRunner
   def confirm?(question)
     answer = 'n'
     announce do
-      puts "#{question} [Yn]"
+      puts "#{question} [Yn]".red
       answer = STDIN.gets.strip.downcase
     end
     return answer != 'n'
@@ -56,10 +58,9 @@ class ShellRunner
   end
 
   def announce(title=nil)
-    puts '----------------------------'
-    puts title unless title.nil?
+    puts ''.red
+    puts title.red unless title.nil?
     yield
-    puts '----------------------------'
   end
 
 end
