@@ -30,8 +30,9 @@ class TestFileRunner
     files = repo.status_files.map {|f| {:file => f} }
     @tests = TestCollection.new(files)
 
+    binding.pry
     if tests.empty?
-      shell.announce 'No tests in status'
+      shell.warn 'No tests in status'
       exit
     end
 

@@ -18,14 +18,7 @@ class TestCollection
 
   def initialize(tests_data)
     @tests = tests_data.map do |test_data|
-      file_path = test_data[:file]
-      test_name = find_test_name(test_data[:line])
-      return nil if (test_name && ! test_name.match(/^test_/))
-
-      TestCase.new(
-        full_path: file_path,
-        test_name: test_name
-      )
+      create_test_case(test_data)
     end.compact
   end
 
@@ -88,6 +81,18 @@ class TestCollection
   def find_test_name(grepped_line)
     return nil unless grepped_line
     grepped_line.strip.gsub(/^\s*def /, '').strip
+  end
+
+  def create_test_case(test_data)
+    file_path = test_data[:file]
+    test_name = find_test_name(test_data[:line])
+    return nil if ! file_path.match(/_test\.rb/)
+    return nil if (test_name && ! test_name.match(/^test_/))
+
+    TestCase.new(
+      full_path: file_path,
+      test_name: test_name
+    )
   end
 
 end

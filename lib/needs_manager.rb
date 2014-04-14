@@ -10,12 +10,13 @@ require_relative 'test_runner'
 
 class NeedsManager
 
-  def self.configure(needs, options)
-    new(needs, options).configure
+  def self.configure(task, needs, options)
+    new(task, needs, options).configure
   end
 
-  attr_reader :needs, :options, :env
-  def initialize(needs, options)
+  attr_reader :needs, :options, :env, :task
+  def initialize(task, needs, options)
+    @task = task
     @needs = needs
     @options = options
     @env = {}
@@ -39,8 +40,7 @@ class NeedsManager
   end
 
   def create_shell
-    ShellRunner.reset_log
-    env[:shell] = shell_class.new(@working_directory)
+    env[:shell] = shell_class.new(task, @working_directory)
   end
 
   def shell_class

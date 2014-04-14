@@ -13,12 +13,12 @@ class Tester
   end
 
   def self.find(input, options)
-    env = NeedsManager.configure(needs, options.merge(repo_type: :info))
+    env = NeedsManager.configure(:test_runner, needs, options.merge(repo_type: :info))
     new(env).find(input)
   end
 
   def self.status(options)
-    env = NeedsManager.configure(needs, options.merge(repo_type: :info))
+    env = NeedsManager.configure(:test_runner, needs, options.merge(repo_type: :info))
     new(env).status(options)
   end
 

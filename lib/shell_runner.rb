@@ -3,25 +3,21 @@ require_relative 'string_extension'
 class ShellRunner
   CommandFailureError = Class.new(StandardError)
 
-  LOG_PATH = '/tmp/up_log.txt'
+  attr_accessor :working_directory, :log_path
 
-  def self.reset_log
-    %x{echo "" > #{LOG_PATH}}
-  end
-
-  attr_accessor :working_directory
-
-  def initialize(working_directory)
+  def initialize(task, working_directory)
     @working_directory = working_directory
     @queue = ''
+    @log_path = "/tmp/#{task}.log"
+    reset_log
   end
 
   def run(cmd, dir: working_directory)
     command = "cd #{dir} && #{cmd}"
     puts command
 
-    %x{ set -o pipefail && #{command} 2>> #{LOG_PATH} | tee -a /tmp/up_log.txt }.chomp.tap do
-      raise CommandFailureError, "The following command has failed: #{command}.  See /tmp/up_log.txt for a full log." if ($?.exitstatus != 0)
+    %x{ set -o pipefail && #{command} 2>> #{log_path} | tee -a #{log_path} }.chomp.tap do
+      raise CommandFailureError, "The following command has failed: #{command}.  See #{log_path} for a full log." if ($?.exitstatus != 0)
     end
   end
 
@@ -60,6 +56,10 @@ class ShellRunner
 
   def notify(msg)
     puts msg.yellow
+  end
+
+  def reset_log
+    %x{echo "" > #{log_path}}
   end
 
 end

@@ -9,17 +9,17 @@ class Upper
   end
 
   def self.rebase_on_master!(options)
-    env = NeedsManager.configure(needs, options.merge(repo_type: :active))
+    env = NeedsManager.configure(:up, needs, options.merge(repo_type: :active))
     new(env).rebase_on_master!
   end
 
   def self.up_master!(options)
-    env = NeedsManager.configure(needs, options.merge(repo_type: :active))
+    env = NeedsManager.configure(:up, needs, options.merge(repo_type: :active))
     new(env).up_master!
   end
 
   def self.no_git(options)
-    env = NeedsManager.configure(needs, options.merge(repo_type: :lazy))
+    env = NeedsManager.configure(:up, needs, options.merge(repo_type: :lazy))
     new(env).no_git
   end
 
