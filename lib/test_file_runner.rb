@@ -35,7 +35,7 @@ class TestFileRunner
     end
 
     if tests.empty?
-      shell.warn 'No tests in status'
+      shell.notify 'No tests to run'
       exit
     end
 
