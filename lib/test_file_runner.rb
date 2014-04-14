@@ -3,8 +3,12 @@ require_relative 'test_collection'
 
 class TestFileRunner
 
-  def self.run(file, env)
+  def self.find(file, env)
     new(env).run(file)
+  end
+
+  def self.status(env)
+    new(env).status
   end
 
   attr_reader :repo, :shell, :test_runner
@@ -14,9 +18,14 @@ class TestFileRunner
     @test_runner = env[:test_runner]
   end
 
-  def run(file)
+  def find(file)
     files = repo.find_files(file).map {|f| {:file => f} }
     tests = TestCollection.new(files)
     test_runner.run_files(tests)
+  end
+
+  def status
+    binding.pry
+    repo.status_files
   end
 end

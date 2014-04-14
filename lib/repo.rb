@@ -44,6 +44,10 @@ class Repo
     shell.run("git ls-files '*#{pattern}*'").split("\n")
   end
 
+  def status_files
+    shell.run("git ls-files -m")
+  end
+
   private
 
   def up

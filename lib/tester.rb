@@ -28,7 +28,11 @@ class Tester
     if ! input.match(/\.rb/)
       TestMethodRunner.run(input, env)
     end
-    TestFileRunner.run(input, env)
+    TestFileRunner.find(input, env)
+  end
+
+  def status
+    TestFileRunner.status(env)
   end
 
 
