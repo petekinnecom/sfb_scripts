@@ -30,14 +30,13 @@ class TestFileRunner
     files = repo.status_files.map {|f| {:file => f} }
     @tests = TestCollection.new(files)
 
-    binding.pry
+    if tests.include_selenium?
+      handle_selenium
+    end
+
     if tests.empty?
       shell.warn 'No tests in status'
       exit
-    end
-
-    if tests.include_selenium?
-      handle_selenium
     end
 
     test_runner.run_files(tests)
