@@ -9,6 +9,7 @@ class CLI < Thor
   # run
   #
   desc "status", "Find dirty tests in your git status and run them"
+  option :all_engines, :type => :boolean, :desc => 'Run all tests found.'
   def status
     Tester.status(options)
   end

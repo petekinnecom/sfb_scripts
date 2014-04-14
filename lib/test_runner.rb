@@ -1,8 +1,9 @@
 class TestRunner
 
-  attr_reader :shell
+  attr_reader :shell, :all_engines_param
   def initialize(env)
     @shell = env[:shell]
+    @all_engines_param = env[:all_engines]
   end
 
   def run_method(test)
@@ -18,11 +19,13 @@ class TestRunner
 
       shell.exec("#{test_runner} #{test_files}", dir: tests.working_dir)
     rescue TestCollection::MultipleWorkingDirectoriesError => e
-      if shell.confirm("Test files are in multiple engines.  Run them all?")
+      if run_across_engines?
         run_across_engines(tests)
       end
     end
   end
+
+  private
 
   def run_across_engines(tests)
     tests.working_dirs.each do |engine_dir|
@@ -33,8 +36,6 @@ class TestRunner
     end
     shell.exec_queue
   end
-
-  private
 
   def test_runner_type(working_dir)
     if shell.run("ls bin", dir: working_dir).split("\n").include? 'testunit'
@@ -62,6 +63,10 @@ class TestRunner
     else
       "ruby -I test -e \"ARGV.each{|f| require Dir.pwd + '/' + f}\""
     end
+  end
+
+  def run_across_engines?
+    all_engines_param || shell.confirm("Test files are in multiple engines.  Run them all?")
   end
 
 end
