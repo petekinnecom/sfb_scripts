@@ -15,7 +15,6 @@ class BundleManager
   end
 
   def bundle(gemfile_directory)
-    puts "bundle install --local in #{gemfile_directory}"
     begin
       shell.run "bundle install --local", dir: gemfile_directory
     rescue Shell::CommandFailureError

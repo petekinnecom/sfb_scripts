@@ -28,6 +28,7 @@ class TestRunner
   private
 
   def run_across_engines(tests)
+    shell.notify "\nfinding test runners"
     tests.working_dirs.each do |engine_dir|
       test_files = tests.relative_paths_in(engine_dir).join(' ')
       test_runner = test_collection_runner(engine_dir)

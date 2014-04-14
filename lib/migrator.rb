@@ -8,7 +8,6 @@ class Migrator
 
   def migrate_where_necessary
     directories_to_migrate.each do |dir|
-      puts "bundle exec rake db:migrate in #{dir}"
       shell.run "bundle exec rake db:create db:migrate", dir: dir
       shell.run "RAILS_ENV=test bundle exec rake db:create db:migrate", dir: dir
     end

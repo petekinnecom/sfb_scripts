@@ -28,7 +28,7 @@ class ShellRunner
   def exec(cmd, dir: working_directory)
     command = "cd #{dir} && #{cmd}"
 
-    puts command
+    notify "\n#{command}"
     Kernel.exec command
   end
 
@@ -38,11 +38,8 @@ class ShellRunner
   end
 
   def confirm?(question)
-    answer = 'n'
-    announce do
-      puts "#{question} [Yn]".red
-      answer = STDIN.gets.strip.downcase
-    end
+    warn "#{question} [Yn]"
+    answer = STDIN.gets.strip.downcase
     return answer != 'n'
   end
 
@@ -51,16 +48,18 @@ class ShellRunner
   end
 
   def exec_queue
-    announce do
-      puts @queue
-    end
-      Kernel.exec @queue
+    notify 'running: '
+    notify ''
+    notify @queue
+    Kernel.exec @queue
   end
 
-  def announce(title=nil)
-    puts ''.red
-    puts title.red unless title.nil?
-    yield
+  def warn(msg)
+    puts msg.red
+  end
+
+  def notify(msg)
+    puts msg.yellow
   end
 
 end
