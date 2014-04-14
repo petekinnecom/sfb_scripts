@@ -23,7 +23,7 @@ class CLI < Thor
     Tester.find(input, options)
   end
 
-  default_task :test_run
+  default_task :status
 
 
 end

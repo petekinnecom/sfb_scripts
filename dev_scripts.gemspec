@@ -13,7 +13,9 @@ Gem::Specification.new do |s|
   s.summary           = "Scripts that help stuff and things"
 
   s.files             = `git ls-files -- lib`.split("\n")
-  s.executables       << 'up'
+
+  s.executables       << 'test_runner'
+  s.executables       << 'app_up'
 
   s.add_dependency('thor', ['>= 0.19', '< 1.0'])
 end
