@@ -23,6 +23,11 @@ class CLI < Thor
     Tester.find(input, options)
   end
 
+  desc "status_check", "Find a test and run it"
+  def status_check
+    Tester.status_check(options)
+  end
+
   default_task :status
 
 

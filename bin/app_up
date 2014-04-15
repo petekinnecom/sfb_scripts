@@ -10,7 +10,7 @@ class CLI < Thor
   #
 
   desc "rebase", "Rebase your commits onto master. Bundle installs and migrates as needed.  Will terminate if conflicts are found."
-  option :loud, :type => :boolean, :desc => 'Pipe output to terminal or not (output is always piped to /tmp/up_log.txt)'
+  option :loud, :type => :boolean, :desc => 'Pipe output to terminal or not (output is always piped to /tmp/up.log)'
 
   def rebase
     Upper.rebase_on_master!(options)
@@ -21,7 +21,7 @@ class CLI < Thor
   #
 
   desc "master", "Switch to master branch and pull to latest. Bundle installs and migrates as needed."
-  option :loud, :type => :boolean, :desc => 'Pipe output to terminal or not (output is always piped to /tmp/up_log.txt)'
+  option :loud, :type => :boolean, :desc => 'Pipe output to terminal or not (output is always piped to /tmp/up.log)'
 
   def master
     Upper.up_master!(options)
@@ -32,7 +32,7 @@ class CLI < Thor
   #
 
   desc "no_git", "Don't update the repo, just bundle install and migrate everything."
-  option :loud, :type => :boolean, :desc => 'Pipe output to terminal or not (output is always piped to /tmp/up_log.txt)'
+  option :loud, :type => :boolean, :desc => 'Pipe output to terminal or not (output is always piped to /tmp/up.log)'
 
   def no_git
     Upper.no_git(options)
