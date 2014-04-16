@@ -1,4 +1,5 @@
 require_relative 'test_runner'
+require_relative 'shell_runner'
 
 class TestMethodRunner
 

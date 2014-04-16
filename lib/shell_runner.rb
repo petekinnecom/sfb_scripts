@@ -16,7 +16,6 @@ class ShellRunner
     command = "cd #{dir} && #{cmd}"
     puts command
     log command
-
     %x{ set -o pipefail && #{command} 2>> #{log_path} | tee -a #{log_path} }.chomp.tap do
       raise CommandFailureError, "The following command has failed: #{command}.  See #{log_path} for a full log." if ($?.exitstatus != 0)
     end
@@ -24,7 +23,6 @@ class ShellRunner
 
   def exec(cmd, dir: working_directory)
     command = "cd #{dir} && #{cmd}"
-
     notify "\n#{command}"
     Kernel.exec command
   end

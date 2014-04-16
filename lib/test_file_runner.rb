@@ -1,11 +1,10 @@
-require_relative 'test_runner'
 require_relative 'test_collection'
 
 
 class TestFileRunner
 
-  def self.find(file, env)
-    new(env).run(file)
+  def self.find(inputs, env)
+    new(env, false).find(inputs)
   end
 
   def self.status(env, ignore_selenium=false)
@@ -20,8 +19,10 @@ class TestFileRunner
     @ignore_selenium = ignore_selenium
   end
 
-  def find(file)
-    files = repo.find_files(file).map {|f| {:file => f} }
+  def find(inputs)
+    files = []
+    inputs.each {|input| files << repo.find_files(input).map {|f| {:file => f} } }
+    files.flatten!
     @tests = TestCollection.new(files)
     test_runner.run_files(tests)
   end

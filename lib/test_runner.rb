@@ -1,3 +1,5 @@
+require_relative 'shell_runner'
+
 class TestRunner
 
   attr_reader :shell, :all_engines_param
@@ -62,7 +64,7 @@ class TestRunner
       "bin/testunit"
       "ruby -I test"
     else
-      "ruby -I test -e \"ARGV.each{|f| require Dir.pwd + '/' + f}\""
+      %{ruby -I test -e 'ARGV.each { |file| require(Dir.pwd + "/" + file) }'}
     end
   end
 

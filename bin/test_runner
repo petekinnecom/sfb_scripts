@@ -8,8 +8,8 @@ class CLI < Thor
   #
   # run
   #
-  desc "status", "Find dirty tests in your git status and run them"
-  option :all_engines, :type => :boolean, :desc => 'Run all tests found.'
+  desc "status", "Find dirty tests in your git status and run them."
+  option :all_engines, :type => :boolean, :desc => 'Run all tests identified, regardless of engine'
   option :no_selenium, :type => :boolean, :desc => 'Ignore selenium'
   def status
     Tester.status(options)
@@ -18,18 +18,19 @@ class CLI < Thor
   #
   # run
   #
-  desc "find", "Find a test and run it"
-  def find(input)
-    Tester.find(input, options)
+  desc "find", <<-DESC
+    Find tests and run them. By trying to match an individual test or the name of a test file(s).
+  DESC
+  def find(*inputs)
+    Tester.find(inputs, options)
   end
 
-  desc "status_check", "Find a test and run it"
+  desc "status_check", "Verify that you don't edit a file without editing its corresponding test file."
   def status_check
     Tester.status_check(options)
   end
 
   default_task :status
-
 
 end
 

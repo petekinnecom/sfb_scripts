@@ -13,9 +13,9 @@ class Tester
     [:shell, :repo, :test_runner]
   end
 
-  def self.find(input, options)
+  def self.find(inputs, options)
     env = NeedsManager.configure(:test_runner, needs, options.merge(repo_type: :info))
-    new(env).find(input)
+    new(env).find(inputs)
   end
 
   def self.status(options)
@@ -33,13 +33,13 @@ class Tester
     @env = env
   end
 
-  def find(input)
+  def find(inputs)
     # each of these replaces this process if successful
     # so no need for logic control flow
-    if ! input.match(/\.rb/)
-      TestMethodRunner.run(input, env)
+    if query_might_be_method?(inputs)
+      TestMethodRunner.run(inputs.first, env)
     end
-    TestFileRunner.find(input, env)
+    TestFileRunner.find(inputs, env)
   end
 
   def status(options)
@@ -50,5 +50,20 @@ class Tester
     StatusChecker.report(env)
   end
 
+  private
+
+  def query_might_be_method?(inputs)
+    if inputs.any? {|input| is_file_path?(input) }
+      false
+    elsif inputs.size > 1
+      false
+    else
+      true
+    end
+  end
+
+  def is_file_path?(input)
+    !! input.match(/\.rb/)
+  end
 
 end
