@@ -25,7 +25,7 @@ class StatusChecker
       shell.warn "The following files have changed without being tested:\n\n#{untested_files.join("\n")}"
 
       STDIN.reopen('/dev/tty')
-      if confirm_exit_status? && shell.confirm?("Do you still wish to commit?")
+      if confirm_exit_status? && shell.confirm?("\nDo you still wish to commit?")
         exit 0
       else
         exit 1

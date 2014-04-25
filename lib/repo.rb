@@ -33,7 +33,7 @@ class Repo
       if status[0] == 'D'
         nil
       else
-        status[1..-1].strip
+        status.split(' ').last
       end
     end.compact
   end

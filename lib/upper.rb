@@ -36,10 +36,13 @@ class Upper
     new(env).pre_push_hook(git_command)
   end
 
-  attr_reader :env
+  attr_reader :env, :repo, :bundler, :migrator
 
   def initialize(env)
     @env = env
+    @repo = env[:repo]
+    @bundler = env[:bundler]
+    @migrator = env[:migrator]
   end
 
   def up_master!

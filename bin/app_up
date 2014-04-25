@@ -11,31 +11,14 @@ class CLI < Thor
 
   desc "rebase", "Rebase your commits onto master. Bundle installs and migrates as needed.  Will terminate if conflicts are found."
   option :loud, :type => :boolean, :desc => 'Pipe output to terminal or not (output is always piped to /tmp/up.log)'
+  option :all, :type => :boolean, :desc => "Don't update the repo, just bundle and migrate everywhere."
 
-  def rebase
-    Upper.rebase_on_master!(options)
-  end
-
-  #
-  # MASTER
-  #
-
-  desc "master", "Switch to master branch and pull to latest. Bundle installs and migrates as needed."
-  option :loud, :type => :boolean, :desc => 'Pipe output to terminal or not (output is always piped to /tmp/up.log)'
-
-  def master
-    Upper.up_master!(options)
-  end
-
-  #
-  # NO_GIT
-  #
-
-  desc "no_git", "Don't update the repo, just bundle install and migrate everything."
-  option :loud, :type => :boolean, :desc => 'Pipe output to terminal or not (output is always piped to /tmp/up.log)'
-
-  def no_git
-    Upper.no_git(options)
+  def up
+    if options[:all]
+      Upper.no_git(options)
+    else
+      Upper.rebase_on_master!(options)
+    end
   end
 
   desc "install_hooks", "Install a pre-push git hook that will not let you push to remote master."
@@ -48,7 +31,7 @@ class CLI < Thor
     Upper.pre_push_hook(git_command, options)
   end
 
-  default_task :rebase
+  default_task :up
 end
 
 CLI.start(ARGV)
