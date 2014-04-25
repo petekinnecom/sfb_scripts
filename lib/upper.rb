@@ -1,4 +1,6 @@
 require_relative 'needs_manager'
+require_relative 'hook_manager'
+
 require 'rubygems'
 require 'pry'
 
@@ -23,13 +25,15 @@ class Upper
     new(env).no_git
   end
 
-  attr_reader :shell, :repo, :bundler, :migrator
+  def self.install_hook!(options)
+    env = NeedsManager.configure(:up, needs, options.merge(repo_type: :lazy))
+    new(env).install_hook!
+  end
+
+  attr_reader :env
 
   def initialize(env)
-    @shell = env[:shell]
-    @repo = env[:repo]
-    @bundler = env[:bundler]
-    @migrator = env[:migrator]
+    @env = env
   end
 
   def up_master!
@@ -47,5 +51,9 @@ class Upper
   def no_git
     bundler.bundle_where_necessary
     migrator.migrate_where_necessary
+  end
+
+  def install_hook!
+    HookManager.install!(env)
   end
 end

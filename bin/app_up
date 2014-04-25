@@ -38,6 +38,11 @@ class CLI < Thor
     Upper.no_git(options)
   end
 
+  desc "install_hook", "Install a pre-push git hook that will not let you push to remote master."
+  def install_hook
+    Upper.install_hook!(options)
+  end
+
   default_task :rebase
 end
 
