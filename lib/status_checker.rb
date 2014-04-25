@@ -1,13 +1,14 @@
 class StatusChecker
-  def self.report(env)
-    new(env).report
+  def self.report(env, confirm_exit_status)
+    new(env, confirm_exit_status).report
   end
 
   attr_reader :repo, :shell, :untested_files
-  def initialize(env)
+  def initialize(env, confirm_exit_status)
     @repo = env[:repo]
     @shell = env[:shell]
     @untested_files = []
+    @confirm_exit_status = confirm_exit_status
   end
 
   def report
@@ -22,7 +23,13 @@ class StatusChecker
       exit 0
     else
       shell.warn "The following files have changed without being tested:\n\n#{untested_files.join("\n")}"
-      exit 1
+
+      STDIN.reopen('/dev/tty')
+      if confirm_exit_status? && shell.confirm?("Do you still wish to commit?")
+        exit 0
+      else
+        exit 1
+      end
     end
 
   end
@@ -47,5 +54,9 @@ class StatusChecker
 
   def full_path_by_basename(file)
     files.select {|f| File.basename(f, '.rb') == file }.first
+  end
+
+  def confirm_exit_status?
+    @confirm_exit_status
   end
 end

@@ -25,10 +25,12 @@ class HookManager
   private
 
   def create_file
-    shell.run %{app_up pre_push_hook "$(ps -ocommand= -p $PPID)"}
+    shell.run %{echo 'app_up pre_push_hook "$(ps -ocommand= -p $PPID)"' > .git/hooks/pre-push}
+    shell.run %{echo 'test_runner status_check --confirm_exit_status' > .git/hooks/pre-commit}
   end
 
   def make_executable
     shell.run "chmod +x .git/hooks/pre-push"
+    shell.run "chmod +x .git/hooks/pre-commit"
   end
 end

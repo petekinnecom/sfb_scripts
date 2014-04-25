@@ -38,9 +38,9 @@ class CLI < Thor
     Upper.no_git(options)
   end
 
-  desc "install_hook", "Install a pre-push git hook that will not let you push to remote master."
-  def install_hook
-    Upper.install_hook!(options)
+  desc "install_hooks", "Install a pre-push git hook that will not let you push to remote master."
+  def install_hooks
+    Upper.install_hooks(options)
   end
 
   desc "pre_push_hook", "Deny destructive actions to the remote master."

@@ -26,6 +26,7 @@ class CLI < Thor
   end
 
   desc "status_check", "Verify that you don't edit a file without editing its corresponding test file."
+  option :confirm_exit_status, :type => :boolean, :desc => 'Asks user whether to exit with status 0 or 1.  Used in the pre-commit hook'
   def status_check
     Tester.status_check(options)
   end

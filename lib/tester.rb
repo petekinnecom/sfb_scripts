@@ -25,7 +25,7 @@ class Tester
 
   def self.status_check(options)
     env = NeedsManager.configure(:test_runner, (needs - [:test_runner]), options.merge(repo_type: :info))
-    new(env).status_check
+    new(env).status_check(options)
   end
 
   attr_accessor :env
@@ -47,8 +47,8 @@ class Tester
     TestFileRunner.status(env, options[:no_selenium])
   end
 
-  def status_check
-    StatusChecker.report(env)
+  def status_check(options)
+    StatusChecker.report(env, options[:confirm_exit_status])
   end
 
   private

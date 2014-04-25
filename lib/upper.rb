@@ -26,9 +26,9 @@ class Upper
     new(env).no_git
   end
 
-  def self.install_hook!(options)
+  def self.install_hooks(options)
     env = NeedsManager.configure(:up, needs, options.merge(repo_type: :lazy))
-    new(env).install_hook!
+    new(env).install_hooks
   end
 
   def self.pre_push_hook(git_command, options)
@@ -59,7 +59,7 @@ class Upper
     migrator.migrate_where_necessary
   end
 
-  def install_hook!
+  def install_hooks
     HookManager.install!(env)
   end
 
