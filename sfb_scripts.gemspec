@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "sfb_scripts"
-  s.version           = "0.1.1"
+  s.version           = "0.1.2"
 
   s.authors           = ["Pete Kinnecom"]
   s.description       = "Easily update your rails app and run tests from command line"

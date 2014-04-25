@@ -4,9 +4,6 @@ require_relative 'test_method_runner'
 require_relative 'test_file_runner'
 require_relative 'status_checker'
 
-require 'rubygems'
-require 'pry'
-
 class Tester
 
   def self.needs
