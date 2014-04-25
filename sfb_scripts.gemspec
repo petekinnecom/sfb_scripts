@@ -1,16 +1,16 @@
 Gem::Specification.new do |s|
-  s.name = "dev_scripts"
-  s.version           = "0.1.0"
+  s.name = "sfb_scripts"
+  s.version           = "0.1.1"
 
   s.authors           = ["Pete Kinnecom"]
-  s.description       = "Scripts that help stuff and things"
-  s.email             = ["pete.kinnecom@appfolio.com"]
+  s.description       = "Easily update your rails app and run tests from command line"
+  s.email             = ["pete.kinnecom@gmail.com"]
 
-  s.homepage          = "http://petekinnecom.net"
+  s.homepage          = "http://github.com/petekinnecom/sfb_scripts/"
   s.licenses          = ["MIT"]
   s.require_paths     = ["lib"]
   s.rubygems_version  = "1.8.24"
-  s.summary           = "Scripts that help stuff and things"
+  s.summary           = "Easily update your rails app and run tests from command line"
 
   s.files             = `git ls-files -- lib`.split("\n")
 

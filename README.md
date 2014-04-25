@@ -1,3 +1,5 @@
+[   low quality readme below : /   ]
+
 #Super Fun Bonus Scripts!
 
 Ever want to load up your sever and look at something, so you start the server, but it's like, _noooo, I'm not going to load until you bundle install_, so you type 'bundle install' like the good natured developer you are and when that finishes, you're like, _Okay, let's start this server_, so you type 'rails s' or something and your stick-in-the-mud computer is all, _pssh, you haven't even migrated yet_ and so you're like, fine, I'll migrate, so you type 'rake db:migrate', and you finally start your server, but then you want to run a test, so you run the test and your computer say, _ahahahahaha, no.  You haven't migrated your **test** database yet_ and then you cry.  YOU CRY.
@@ -9,6 +11,14 @@ Super Fun Bonus Scripts Turbo contains two scripts that are designed for rails a
 - __app\_up:__ Rebases, bundles, and migrates for you.
 
 - __test\_runner:__ Easily run tests from the command line.
+
+---
+
+#installation
+
+1. I suggest installing the gem to your global gemset, so that you can use it in any project:
+
+        rvm @global do gem install sfb_scripts
 
 ---
 
