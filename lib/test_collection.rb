@@ -13,7 +13,6 @@ class TestCollection
     new(file_path).from_file_path
   end
 
-
   attr_reader :tests
 
   def initialize(tests_data)
