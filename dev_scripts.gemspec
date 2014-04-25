@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "dev_scripts"
-  s.version           = "0.0.3"
+  s.version           = "0.1.0"
 
   s.authors           = ["Pete Kinnecom"]
   s.description       = "Scripts that help stuff and things"
