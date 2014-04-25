@@ -5,7 +5,6 @@ require_relative 'lazy_repo'
 require_relative 'active_repo'
 require_relative 'migrator'
 require_relative 'bundle_manager'
-require_relative 'needs_manager'
 require_relative 'test_runner'
 
 class NeedsManager
@@ -14,9 +13,9 @@ class NeedsManager
     new(task, needs, options).configure
   end
 
-  attr_reader :needs, :options, :env, :task
+  attr_reader :needs, :options, :env, :log_file
   def initialize(task, needs, options)
-    @task = task
+    @log_file = log_file_for(task)
     @needs = needs
     @options = options
     @env = {}
@@ -40,7 +39,7 @@ class NeedsManager
   end
 
   def create_shell
-    env[:shell] = shell_class.new(task, @working_directory)
+    env[:shell] = shell_class.new(log_file, @working_directory)
   end
 
   def shell_class
@@ -78,5 +77,9 @@ class NeedsManager
       shell: env[:shell],
       all_engines: options[:all_engines]
     )
+  end
+
+  def log_file_for(task)
+    "/tmp/#{task}.log"
   end
 end

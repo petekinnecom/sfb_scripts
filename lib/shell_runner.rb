@@ -5,10 +5,10 @@ class ShellRunner
 
   attr_accessor :working_directory, :log_path
 
-  def initialize(task, working_directory)
+  def initialize(log_path, working_directory)
     @working_directory = working_directory
     @queue = ''
-    @log_path = "/tmp/#{task}.log"
+    @log_path = log_path
     reset_log
   end
 
