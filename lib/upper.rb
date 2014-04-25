@@ -1,5 +1,6 @@
 require_relative 'needs_manager'
 require_relative 'hook_manager'
+require_relative 'pre_push_hook'
 
 require 'rubygems'
 require 'pry'
@@ -30,6 +31,11 @@ class Upper
     new(env).install_hook!
   end
 
+  def self.pre_push_hook(git_command, options)
+    env = NeedsManager.configure(:up, needs, options.merge(repo_type: :lazy))
+    new(env).pre_push_hook(git_command)
+  end
+
   attr_reader :env
 
   def initialize(env)
@@ -55,5 +61,9 @@ class Upper
 
   def install_hook!
     HookManager.install!(env)
+  end
+
+  def pre_push_hook(git_command)
+    PrePushHook.check(git_command, env)
   end
 end

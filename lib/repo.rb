@@ -45,6 +45,10 @@ class Repo
     end
   end
 
+  def current_branch
+    shell.run 'git rev-parse --abbrev-ref HEAD'
+  end
+
   private
 
   def interpret_grep_result(grep_result)

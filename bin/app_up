@@ -43,6 +43,11 @@ class CLI < Thor
     Upper.install_hook!(options)
   end
 
+  desc "pre_push_hook", "Deny destructive actions to the remote master."
+  def pre_push_hook(git_command)
+    Upper.pre_push_hook(git_command, options)
+  end
+
   default_task :rebase
 end
 

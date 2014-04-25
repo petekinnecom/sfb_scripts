@@ -25,7 +25,7 @@ class HookManager
   private
 
   def create_file
-    shell.run %{echo "app_up pre_push_check" > .git/hooks/pre-push}
+    shell.run %{app_up pre_push_hook "$(ps -ocommand= -p $PPID)"}
   end
 
   def make_executable
