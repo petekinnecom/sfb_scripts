@@ -52,7 +52,10 @@ class TestRunner
 
   def named_test_runner(working_dir)
     if test_runner_type(working_dir) == :spring
-      "bin/testunit"
+      # hack:
+      # Add some options for using spring.
+      #
+      #"bin/testunit"
       "ruby -I test"
     else
       "ruby -I test"
@@ -61,8 +64,8 @@ class TestRunner
 
   def test_collection_runner(working_dir)
     if test_runner_type(working_dir) == :spring
-      "bin/testunit"
-      "ruby -I test"
+      #"bin/testunit"
+      %{ruby -I test -e 'ARGV.each { |file| require(Dir.pwd + "/" + file) }'}
     else
       %{ruby -I test -e 'ARGV.each { |file| require(Dir.pwd + "/" + file) }'}
     end

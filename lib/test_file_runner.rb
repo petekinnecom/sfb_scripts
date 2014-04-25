@@ -23,7 +23,6 @@ class TestFileRunner
     inputs.each {|input| files << repo.find_files(input).map {|f| {:file => f} } }
     files.flatten!
     @tests = TestCollection.new(files)
-
     if @tests.present?
       test_runner.run_files(tests)
     else
