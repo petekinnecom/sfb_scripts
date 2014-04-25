@@ -18,17 +18,20 @@ class TestMethodRunner
     @regex = regex
 
     if tests.empty?
+      shell.notify "Could not find matching test method."
       return false
     elsif tests.size == 1
       test_runner.run_method(tests.first)
     elsif tests.in_one_file?
+      shell.notify "Multiple matches in same file. Running that file."
       test_runner.run_files(tests)
-    elsif tests.in_one_engine? && tests.full_paths.size < 4
+    elsif tests.in_one_engine? && tests.full_paths.size < 4 # hack: maybe should ask here?
+      shell.notify "Multiple matches across files in same engine. Running those files."
       test_runner.run_files(tests)
     else
-      puts 'Found too many tests:'
-      tests[0..10].each {|t| puts "#{t[:working_dir]}#{t[:file]}: #{t[:test]}" }
-      puts '...'
+      shell.warn 'Found too many tests:'
+      tests[0..10].each {|t| shell.notify "#{t.full_path}: #{t.test_name}" }
+      shell.notify '...'
       exit
     end
   end

@@ -25,12 +25,20 @@ class TestCollection
     tests.empty?
   end
 
+  def present?
+    ! empty?
+  end
+
   def size
     tests.size
   end
 
   def first
     tests.first
+  end
+
+  def [](*args)
+    tests[*args]
   end
 
   def in_one_file?

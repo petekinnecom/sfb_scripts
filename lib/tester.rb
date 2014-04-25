@@ -40,6 +40,7 @@ class Tester
       TestMethodRunner.run(inputs.first, env)
     end
     TestFileRunner.find(inputs, env)
+    env[:shell].warn "Giving up :("
   end
 
   def status(options)
