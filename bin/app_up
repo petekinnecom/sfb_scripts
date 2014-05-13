@@ -9,7 +9,7 @@ class CLI < Thor
   # REBASE
   #
 
-  desc "rebase", "Rebase your commits onto master. Bundle installs and migrates as needed.  Will terminate if conflicts are found."
+  desc "up", "Rebase your commits onto master. Bundle installs and migrates as needed.  Will terminate if conflicts are found."
   option :loud, :type => :boolean, :desc => 'Pipe output to terminal or not (output is always piped to /tmp/up.log)'
   option :all, :type => :boolean, :desc => "Don't update the repo, just bundle and migrate everywhere."
 

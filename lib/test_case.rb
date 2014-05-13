@@ -11,14 +11,14 @@ class TestCase
   def working_dir
     @working_dir ||=
       if full_path.match(/^(.*)test\//)
-        "#{full_path.match(/^(.*)test\//)[1]}"
+        "./#{full_path.match(/^(.*)test\//)[1]}"
       else
         raise TestDirectoryError.new("Can't find test's working directory")
       end
   end
 
   def relative_path
-    @relative_path ||= full_path.gsub(/^#{working_dir}/, '') || raise_file_path_error
+    @relative_path ||= full_path.gsub(/^#{working_dir.gsub(/^\.\//, '')}/, '') || raise_file_path_error
   end
 
   def raise_file_path_error

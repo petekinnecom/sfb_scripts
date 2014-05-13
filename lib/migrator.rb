@@ -8,8 +8,9 @@ class Migrator
 
   def migrate_where_necessary
     directories_to_migrate.each do |dir|
-      shell.run "bundle exec rake db:create db:migrate", dir: dir
-      shell.run "RAILS_ENV=test bundle exec rake db:create db:migrate", dir: dir
+      begin
+        shell.run "bundle exec rake db:migrate", dir: dir
+        shell.run "RAILS_ENV=test bundle exec rake db:migrate", dir: dir
     end
   end
 
@@ -22,7 +23,7 @@ class Migrator
 
   def in_rack_application?(migrate_dir)
     root_dir = migrate_dir.gsub(/db\/migrate$/, '')
-    File.file?("#{root_dir}/config.ru")
+    true
   end
 
 end
