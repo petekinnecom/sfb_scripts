@@ -11,10 +11,11 @@ class CLI < Thor
 
   desc "up", "Rebase your commits onto master. Bundle installs and migrates as needed.  Will terminate if conflicts are found."
   option :loud, :type => :boolean, :desc => 'Pipe output to terminal or not (output is always piped to /tmp/up.log)'
-  option :all, :type => :boolean, :desc => "Don't update the repo, just bundle and migrate everywhere."
+  option :no_git, aliases: :all, :type => :boolean, :desc => "Don't update the repo, just bundle and migrate everywhere."
+  option :no_engines, type: :boolean, desc: "Don't migrate engines"
 
   def up
-    if options[:all]
+    if options[:no_git]
       Upper.no_git(options)
     else
       Upper.rebase_on_master!(options)
