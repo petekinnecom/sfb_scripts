@@ -9,12 +9,12 @@ class CLI < Thor
   # REBASE
   #
 
-  desc "up", "Rebase your commits onto master. Bundle installs and migrates as needed.  Will terminate if conflicts are found."
-  option :loud, :type => :boolean, :desc => 'Pipe output to terminal or not (output is always piped to /tmp/up.log)'
+  desc "app_up", "Rebase your commits onto master. Bundle installs and migrates as needed.  Will terminate if conflicts are found."
+  option :loud, :type => :boolean, :desc => 'Pipe output to terminal or not (output is always piped to /tmp/app_up.log)'
   option :no_git, aliases: :all, :type => :boolean, :desc => "Don't update the repo, just bundle and migrate everywhere."
   option :no_engines, type: :boolean, desc: "Don't migrate engines"
 
-  def up
+  def app_up
     if options[:no_git]
       Upper.no_git(options)
     else
@@ -32,7 +32,7 @@ class CLI < Thor
     Upper.pre_push_hook(git_command, options)
   end
 
-  default_task :up
+  default_task :app_up
 end
 
 CLI.start(ARGV)
