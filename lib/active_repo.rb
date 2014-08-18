@@ -3,6 +3,7 @@ require_relative 'repo'
 class ActiveRepo < Repo
 
   def rebase_on_master!
+    shell.notify "\nRebasing current branch on master:"
     up do
       # will raise an error with merge conflicts
       begin
@@ -21,9 +22,19 @@ class ActiveRepo < Repo
   end
 
   def up
-    @old_sha = current_sha
+    old_sha = current_sha
     yield
-    @new_sha = current_sha
+
+    set_files_changed(old_sha)
+  end
+
+  def set_files_changed(old_sha)
+    shell.notify "\nIdentifying changed files:"
+    @files_changed = (shell.run "git diff --name-only #{old_sha}").split("\n")
+  end
+
+  def files_changed
+    @files_changed
   end
 
   def pull_origin_master!

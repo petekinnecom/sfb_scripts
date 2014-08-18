@@ -10,17 +10,11 @@ class Repo
     @shell = shell
   end
 
-  def files_changed
-    @files_changed ||= (shell.run "git diff --name-only #{@old_sha}").split("\n")
-  end
 
   def changed?(file_path)
     files_changed.include? file_path
   end
 
-  def all_files
-    @all_files ||= shell.run("git ls-tree --full-tree -r HEAD --name-only").split("\n")
-  end
 
   def find_files(pattern)
     shell.run("git ls-files '*#{pattern}*'").split("\n")

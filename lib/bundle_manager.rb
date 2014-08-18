@@ -7,6 +7,7 @@ class BundleManager
   end
 
   def bundle_where_necessary
+    shell.notify "\nBundling:"
     find("Gemfile.lock").each do |gemfile_lock|
       if repo.changed?(gemfile_lock)
         bundle(directory_of(gemfile_lock))

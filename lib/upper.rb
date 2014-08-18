@@ -55,6 +55,7 @@ class Upper
   end
 
   def no_git
+    env[:shell].notify "\nBundling and migrating all apps/engines:"
     bundler.bundle_where_necessary
     migrator.migrate_where_necessary
   end

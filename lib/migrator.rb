@@ -10,6 +10,7 @@ class Migrator
   end
 
   def migrate_where_necessary
+    shell.notify "\nMigrating:"
     directories_to_migrate.each do |dir|
       shell.run "bundle exec rake db:migrate", dir: dir
       shell.run "RAILS_ENV=test bundle exec rake db:migrate", dir: dir
