@@ -1,13 +1,13 @@
 class Migrator
-  attr_accessor :shell, :repo, :queue
+  attr_accessor :shell, :repo, :queue, :folder_guard
 
   # hack: move engines flag into
   # another object that decides
-  def initialize(repo: raise, shell: raise, queue: raise, migrate_engines: raise)
+  def initialize(repo: raise, shell: raise, queue: raise, folder_guard: raise)
     @shell = shell
     @repo = repo
-    @migrate_engines = migrate_engines
     @queue = queue
+    @folder_guard = folder_guard
   end
 
   def migrate_where_necessary
@@ -22,7 +22,7 @@ class Migrator
 
   def directories_to_migrate
     migrate_dirs = repo.files_changed.select {|f| f.match("/migrate/") }.map {|f| File.dirname(f) }.map {|dir| dir.gsub(/\/db\/migrate$/, '')}.uniq
-    migrate_dirs.select {|d| in_rack_application?(d) };
+    migrate_dirs.select {|d| folder_guard.allowed?(d) };
   end
 
   private
@@ -37,14 +37,7 @@ class Migrator
   end
 
   def in_rack_application?(migrate_dir)
-    if migrate_engines?
-      true
-    else
-      ! migrate_dir.match(/engines/)
-    end
+    folder_guard.allowed?(migrate_dir)
   end
 
-  def migrate_engines?
-    @migrate_engines
-  end
 end

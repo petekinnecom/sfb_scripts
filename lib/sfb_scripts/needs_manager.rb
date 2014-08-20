@@ -16,6 +16,7 @@ require_relative 'test_running/test_collection'
 require_relative 'test_running/test_file_runner'
 require_relative 'test_running/test_method_runner'
 require_relative 'test_running/test_runner'
+require_relative 'folder_guard'
 
 
 class NeedsManager
@@ -39,6 +40,8 @@ class NeedsManager
     set_working_directory
 
     create_shell
+    create_folder_guard
+
     create_repo if needs.include? :repo
     create_bundler if needs.include? :bundler
     create_migrator if needs.include? :migrator
@@ -64,6 +67,12 @@ class NeedsManager
     end
   end
 
+  def create_folder_guard
+    denied_folders = []
+    denied_folders << 'engines' if ! options[:engines]
+    env[:folder_guard] = FolderGuard.new(denied_folders)
+  end
+
   def create_repo
     env[:repo] = repo_class.new(shell: env[:shell])
   end
@@ -80,12 +89,12 @@ class NeedsManager
 
   def create_bundler
     queue = WorkQueue.new(BUNDLER_MAX_THREAD_COUNT, nil)
-    env[:bundler] = BundleManager.new(shell: env[:shell], repo: env[:repo], queue: queue)
+    env[:bundler] = BundleManager.new(shell: env[:shell], repo: env[:repo], queue: queue, folder_guard: env[:folder_guard])
   end
 
   def create_migrator
     queue = WorkQueue.new(MIGRATOR_MAX_THREAD_COUNT, nil)
-    env[:migrator] = Migrator.new(shell: env[:shell], repo: env[:repo], queue: queue, migrate_engines: ! options[:no_engines])
+    env[:migrator] = Migrator.new(shell: env[:shell], repo: env[:repo], queue: queue, folder_guard: env[:folder_guard])
   end
 
   def create_test_runner

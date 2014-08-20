@@ -1,10 +1,11 @@
 class BundleManager
-  attr_accessor :shell, :repo, :queue
+  attr_accessor :shell, :repo, :queue, :folder_guard
 
-  def initialize(repo: raise, shell: raise, queue: raise)
+  def initialize(repo: raise, shell: raise, queue: raise, folder_guard: folder_guard)
     @shell = shell
     @repo = repo
     @queue = queue
+    @folder_guard = folder_guard
   end
 
   def bundle_where_necessary
@@ -31,6 +32,9 @@ class BundleManager
   def directories_to_bundle
     changed_gemfile_locks.map do |gemfile_lock|
       directory_of(gemfile_lock)
+    end
+    .select do |dir|
+      folder_guard.allowed?(dir)
     end
   end
 
