@@ -1,5 +1,5 @@
 class Migrator
-  attr_accessor :shell, :repo
+  attr_accessor :shell, :repo, :queue
 
   # hack: move engines flag into
   # another object that decides
@@ -7,14 +7,18 @@ class Migrator
     @shell = shell
     @repo = repo
     @migrate_engines = migrate_engines
+    # should be passed in
+    @queue = WorkQueue.new(8, nil)
   end
 
   def migrate_where_necessary
     shell.notify "\nMigrating:"
-    directories_to_migrate.each do |dir|
-      shell.run "bundle exec rake db:migrate", dir: dir
-      shell.run "RAILS_ENV=test bundle exec rake db:migrate", dir: dir
+    migrations.each do |migration|
+      queue.enqueue_b do
+        shell.run "RAILS_ENV=#{migration[:env]} bundle exec rake db:migrate", dir: migration[:dir]
+      end
     end
+    queue.join
   end
 
   def directories_to_migrate
@@ -23,6 +27,15 @@ class Migrator
   end
 
   private
+
+  def migrations
+    directories_to_migrate.map do |dir|
+      [
+        {env: "development",dir: dir},
+        {env: "test", dir: dir}
+      ]
+    end.flatten
+  end
 
   def in_rack_application?(migrate_dir)
     if migrate_engines?

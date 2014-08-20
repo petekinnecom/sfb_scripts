@@ -1,3 +1,5 @@
+require 'work_queue'
+
 # this is a bummer...
 require_relative 'monkey_patches/string_extension'
 require_relative 'bundler/bundle_manager'

@@ -18,5 +18,6 @@ Gem::Specification.new do |s|
   s.executables       << 'app_up'
 
   s.add_dependency('thor', ['>= 0.19', '< 1.0'])
+  s.add_dependency('work_queue', ['>= 2.5.3', '< 3.0'])
 end
 
