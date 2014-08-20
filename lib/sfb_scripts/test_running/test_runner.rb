@@ -1,5 +1,3 @@
-require_relative 'shell_runner'
-
 class TestRunner
 
   attr_reader :shell, :all_engines_param

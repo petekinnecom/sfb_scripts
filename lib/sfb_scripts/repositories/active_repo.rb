@@ -1,5 +1,3 @@
-require_relative 'repo'
-
 class ActiveRepo < Repo
 
   def rebase_on_master!

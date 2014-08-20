@@ -1,5 +1,3 @@
-require_relative 'test_case'
-
 class TestCollection
 
   MultipleWorkingDirectoriesError = Class.new(StandardError)

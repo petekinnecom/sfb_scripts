@@ -1,6 +1,4 @@
 require_relative 'needs_manager'
-require_relative 'hook_manager'
-require_relative 'pre_push_hook'
 
 class Upper
 

@@ -1,5 +1,3 @@
-require_relative 'string_extension'
-
 class ShellRunner
   CommandFailureError = Class.new(StandardError)
 

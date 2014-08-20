@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
-require_relative '../lib/upper'
 require 'thor'
+require_relative '../lib/sfb_scripts/upper'
 
 class CLI < Thor
 

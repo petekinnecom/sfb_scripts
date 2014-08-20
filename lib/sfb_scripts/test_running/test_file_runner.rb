@@ -1,5 +1,3 @@
-require_relative 'test_collection'
-
 class TestFileRunner
 
   def self.find(inputs, env)

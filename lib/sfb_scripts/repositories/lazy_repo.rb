@@ -1,5 +1,3 @@
-require_relative 'repo'
-
 class LazyRepo < Repo
 
   def initialize(*args)
