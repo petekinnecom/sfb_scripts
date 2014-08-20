@@ -9,11 +9,9 @@ class BundleManager
 
   def bundle_where_necessary
     shell.notify "\nBundling:"
-    find("Gemfile.lock").each do |gemfile_lock|
-      if repo.changed?(gemfile_lock)
-        queue.enqueue_b do
-          bundle(directory_of(gemfile_lock))
-        end
+    directories_to_bundle.each do |dir|
+      queue.enqueue_b do
+        bundle(dir)
       end
     end
     queue.join
@@ -31,13 +29,19 @@ class BundleManager
   end
 
   def directories_to_bundle
+    changed_gemfile_locks.map do |gemfile_lock|
+      directory_of(gemfile_lock)
+    end
+  end
+
+  def changed_gemfile_locks
+    all_gemfile_locks.select do |gemfile_lock|
+      repo.changed?(gemfile_lock)
+    end
+  end
+
+  def all_gemfile_locks
     find("Gemfile.lock")
-      .select { |gemfile_lock|
-        repo.changed?(gemfile_lock)
-      }
-      .map { |gemfile_lock| 
-        directory_of(gemfile_lock)
-      }
   end
 
   def find(file_name)
