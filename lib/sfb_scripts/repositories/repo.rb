@@ -10,11 +10,9 @@ class Repo
     @shell = shell
   end
 
-
   def changed?(file_path)
     files_changed.include? file_path
   end
-
 
   def find_files(pattern)
     shell.run("git ls-files '*#{pattern}*'").split("\n")
@@ -47,8 +45,16 @@ class Repo
 
   def interpret_grep_result(grep_result)
     splits = grep_result.split(/:/)
-    file = splits.shift
-    line = splits.join(':')
+    file = splits.shift.strip
+    # we rejoin on ':' because our
+    # code may have colons inside of it.
+    #
+    # example:
+    # path/to/file: run_method(a: A, b: B)
+    #
+    # so shift the first one out, then
+    # rejoin the rest
+    line = splits.join(':').strip
 
     {
       :file => file,

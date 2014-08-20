@@ -1,23 +1,4 @@
-require 'work_queue'
-
-# this is a bummer...
-require_relative 'monkey_patches/string_extension'
-require_relative 'bundler/bundle_manager'
-require_relative 'hooks/pre_push_hook'
-require_relative 'migrations/migrator'
-require_relative 'repositories/repo'
-require_relative 'repositories/active_repo'
-require_relative 'repositories/lazy_repo'
-require_relative 'shells/shell_runner'
-require_relative 'shells/loud_shell_runner'
-require_relative 'test_running/status_checker'
-require_relative 'test_running/test_case'
-require_relative 'test_running/test_collection'
-require_relative 'test_running/test_file_runner'
-require_relative 'test_running/test_method_runner'
-require_relative 'test_running/test_runner'
-require_relative 'folder_guard'
-
+require_relative 'dependency_loader'
 
 class NeedsManager
 
