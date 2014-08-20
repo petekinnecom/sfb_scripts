@@ -3,12 +3,11 @@ class Migrator
 
   # hack: move engines flag into
   # another object that decides
-  def initialize(repo: raise, shell: raise, migrate_engines: raise)
+  def initialize(repo: raise, shell: raise, queue: raise, migrate_engines: raise)
     @shell = shell
     @repo = repo
     @migrate_engines = migrate_engines
-    # should be passed in
-    @queue = WorkQueue.new(8, nil)
+    @queue = queue
   end
 
   def migrate_where_necessary

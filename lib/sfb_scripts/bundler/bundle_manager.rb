@@ -1,10 +1,10 @@
 class BundleManager
   attr_accessor :shell, :repo, :queue
 
-  def initialize(repo: raise, shell: raise)
+  def initialize(repo: raise, shell: raise, queue: raise)
     @shell = shell
     @repo = repo
-    @queue = WorkQueue.new(2, nil)
+    @queue = queue
   end
 
   def bundle_where_necessary
@@ -19,6 +19,8 @@ class BundleManager
     queue.join
   end
 
+  private
+
   def bundle(gemfile_directory)
     begin
       shell.run "bundle install --local", dir: gemfile_directory
@@ -26,6 +28,16 @@ class BundleManager
       puts 'trying without --local'
       shell.run "bundle install", dir: gemfile_directory
     end
+  end
+
+  def directories_to_bundle
+    find("Gemfile.lock")
+      .select { |gemfile_lock|
+        repo.changed?(gemfile_lock)
+      }
+      .map { |gemfile_lock| 
+        directory_of(gemfile_lock)
+      }
   end
 
   def find(file_name)

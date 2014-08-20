@@ -20,6 +20,9 @@ require_relative 'test_running/test_runner'
 
 class NeedsManager
 
+  BUNDLER_MAX_THREAD_COUNT = 2
+  MIGRATOR_MAX_THREAD_COUNT = 8
+
   def self.configure(task, needs, options)
     new(task, needs, options).configure
   end
@@ -76,11 +79,13 @@ class NeedsManager
   end
 
   def create_bundler
-    env[:bundler] = BundleManager.new(shell: env[:shell], repo: env[:repo])
+    queue = WorkQueue.new(BUNDLER_MAX_THREAD_COUNT, nil)
+    env[:bundler] = BundleManager.new(shell: env[:shell], repo: env[:repo], queue: queue)
   end
 
   def create_migrator
-    env[:migrator] = Migrator.new(shell: env[:shell], repo: env[:repo], migrate_engines: ! options[:no_engines])
+    queue = WorkQueue.new(MIGRATOR_MAX_THREAD_COUNT, nil)
+    env[:migrator] = Migrator.new(shell: env[:shell], repo: env[:repo], queue: queue, migrate_engines: ! options[:no_engines])
   end
 
   def create_test_runner
