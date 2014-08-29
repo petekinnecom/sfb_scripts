@@ -1,8 +1,4 @@
-class TestFileRunner
-
-  def self.find(inputs, env)
-    new(env, false).find(inputs)
-  end
+class StatusTestRunner
 
   def self.status(env, ignore_selenium=false)
     new(env, ignore_selenium).status
@@ -14,16 +10,6 @@ class TestFileRunner
     @shell = env[:shell]
     @test_runner = env[:test_runner]
     @ignore_selenium = ignore_selenium
-  end
-
-  def find(inputs)
-    files = []
-    inputs.each {|input| files << repo.find_files(input).map {|f| {:file => f} } }
-    files.flatten!
-    @tests = TestCollection.new(files)
-
-    return false unless @tests.present?
-    test_runner.run_files(tests)
   end
 
   def status

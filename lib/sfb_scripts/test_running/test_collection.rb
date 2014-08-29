@@ -13,7 +13,7 @@ class TestCollection
 
   attr_reader :tests
 
-  def initialize(tests_data)
+  def initialize(tests_data=[])
     @tests = tests_data.map do |test_data|
       create_test_case(test_data)
     end.compact
@@ -79,6 +79,10 @@ class TestCollection
     raise MultipleWorkingDirectoriesError.new("Can't run tests for more than one engine") unless working_dirs.size == 1
 
     return working_dirs.first
+  end
+
+  def is_one_test_method?
+    (size == 1) &&  tests.first.is_method?
   end
 
   private

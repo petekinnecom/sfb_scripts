@@ -27,41 +27,18 @@ class Tester
   end
 
   def find(inputs)
-    # each of these replaces this process if successful
-    # so no need for logic control flow
-    if query_might_be_method?(inputs)
-      TestMethodRunner.run(inputs.first, env)
-    end
-
-    TestFileRunner.find(inputs, env)
-
-    TestMethodRunner.run_file_with_match(inputs.first, env)
+    tests = TestFinder.find(inputs, env)
+    env[:test_runner].run(tests)
 
     env[:shell].warn "Giving up :("
   end
 
   def status(options)
-    TestFileRunner.status(env, options[:no_selenium])
+    StatusTestRunner.status(env, options[:no_selenium])
   end
 
   def status_check(options)
     StatusChecker.report(env, options[:confirm_exit_status])
-  end
-
-  private
-
-  def query_might_be_method?(inputs)
-    if inputs.any? {|input| is_file_path?(input) }
-      false
-    elsif inputs.size > 1
-      false
-    else
-      true
-    end
-  end
-
-  def is_file_path?(input)
-    !! input.match(/\.rb/)
   end
 
 end

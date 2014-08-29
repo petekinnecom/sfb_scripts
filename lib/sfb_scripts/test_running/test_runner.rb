@@ -6,6 +6,23 @@ class TestRunner
     @all_engines_param = env[:all_engines]
   end
 
+  def run(tests)
+    if tests.is_one_test_method?
+      run_method(tests.first)
+    elsif tests.in_one_file?
+      shell.notify "Multiple matches in same file. Running that file."
+      run_files(tests)
+    elsif tests.in_one_engine? && tests.full_paths.size < 4 # hack: maybe should ask here?
+      shell.notify "Multiple matches across files in same engine. Running those files."
+      run_files(tests)
+    else
+      shell.warn 'Found too many tests:'
+      tests[0..10].each {|t| shell.notify "#{t.full_path}: #{t.test_name}" }
+      shell.notify '...'
+      exit
+    end
+  end
+
   def run_method(test)
     test_runner = named_test_runner(test.working_dir)
 
@@ -24,8 +41,6 @@ class TestRunner
       end
     end
   end
-
-  private
 
   def run_across_engines(tests)
     shell.notify "\nfinding test runners"

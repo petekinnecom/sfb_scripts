@@ -17,6 +17,10 @@ class TestCase
       end
   end
 
+  def is_method?
+    @test_name && !! @test_name.match(/^test_/)
+  end
+
   def relative_path
     @relative_path ||= full_path.gsub(/^#{working_dir.gsub(/^\.\//, '')}/, '') || raise_file_path_error
   end
