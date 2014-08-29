@@ -32,7 +32,11 @@ class Tester
     if query_might_be_method?(inputs)
       TestMethodRunner.run(inputs.first, env)
     end
+
     TestFileRunner.find(inputs, env)
+
+    TestMethodRunner.run_file_with_match(inputs.first, env)
+
     env[:shell].warn "Giving up :("
   end
 

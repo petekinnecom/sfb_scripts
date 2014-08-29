@@ -21,11 +21,9 @@ class TestFileRunner
     inputs.each {|input| files << repo.find_files(input).map {|f| {:file => f} } }
     files.flatten!
     @tests = TestCollection.new(files)
-    if @tests.present?
-      test_runner.run_files(tests)
-    else
-      shell.notify "Could not find matching test file."
-    end
+
+    return false unless @tests.present?
+    test_runner.run_files(tests)
   end
 
   def status

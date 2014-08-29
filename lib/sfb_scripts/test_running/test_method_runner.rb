@@ -4,11 +4,16 @@ class TestMethodRunner
     new(env).run(regex)
   end
 
+  def self.run_file_with_match(regex, env)
+    new(env, pure_regex: true).run(regex)
+  end
+
   attr_reader :regex, :repo, :shell, :test_runner
-  def initialize(env)
+  def initialize(env, pure_regex: false)
     @repo = env[:repo]
     @shell = env[:shell]
     @test_runner = env[:test_runner]
+    @pure_regex = pure_regex
   end
 
   def run(regex)
@@ -18,7 +23,11 @@ class TestMethodRunner
       shell.notify "Could not find matching test method."
       return false
     elsif tests.size == 1
-      test_runner.run_method(tests.first)
+      if @pure_regex
+        test_runner.run_files(tests)
+      else
+        test_runner.run_method(tests.first)
+      end
     elsif tests.in_one_file?
       shell.notify "Multiple matches in same file. Running that file."
       test_runner.run_files(tests)
@@ -38,7 +47,7 @@ class TestMethodRunner
   end
 
   def find_tests_by_name
-    test_def_regex = "^\s*def .*#{regex}.*"
+    test_def_regex = @pure_regex ? regex : "^\s*def .*#{regex}.*"
     begin
       return repo.grep(test_def_regex, file_pattern: '*_test.rb')
     rescue ShellRunner::CommandFailureError

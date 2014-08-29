@@ -84,7 +84,8 @@ class TestCollection
   private
 
   def find_test_name(grepped_line)
-    return nil unless grepped_line
+    return nil unless grepped_line && grepped_line.match(/^\s*def\s+test_/)
+
     grepped_line.strip.gsub(/^\s*def /, '').strip
   end
 
@@ -92,7 +93,6 @@ class TestCollection
     file_path = test_data[:file]
     test_name = find_test_name(test_data[:line])
     return nil if ! file_path.match(/_test\.rb/)
-    return nil if (test_name && ! test_name.match(/^test_/))
 
     TestCase.new(
       full_path: file_path,

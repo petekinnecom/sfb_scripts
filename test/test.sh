@@ -19,8 +19,9 @@ cd test/test_app
 git reset --hard e2754e5449e66157590e5c8694c36f9843df114c > /dev/null
 run_test `test_runner find test_one | grep test_one_success | wc -l`  1
 
-
 run_test `test_runner find thing_test | grep thing_test_success | wc -l` 1
+
+run_test `test_runner find ThingTest | grep thing_test_success | wc -l` 1
 
 git reset --hard fad523ac3479099dda2e16dc4ac642e6e991a751 > /dev/null
 run_test `test_runner find multiple | grep multiple_matches_success | wc -l` 2
