@@ -1,8 +1,6 @@
 class Migrator
   attr_accessor :shell, :repo, :queue, :folder_guard
 
-  # hack: move engines flag into
-  # another object that decides
   def initialize(repo: raise, shell: raise, queue: raise, folder_guard: raise)
     @shell = shell
     @repo = repo
@@ -14,7 +12,7 @@ class Migrator
     shell.notify "\nMigrating:"
     migrations.each do |migration|
       queue.enqueue_b do
-        shell.run "RAILS_ENV=#{migration[:env]} bundle exec rake db:migrate", dir: migration[:dir]
+        shell.run "RAILS_ENV=#{migration[:env]} bundle exec rake db:create db:migrate", dir: migration[:dir]
       end
     end
     queue.join
