@@ -13,12 +13,15 @@ class CLI < Thor
   option :loud, :type => :boolean, :desc => 'Pipe output to terminal or not (output is always piped to /tmp/app_up.log)'
   option :no_git, aliases: ['--no-pull', '--no-rebase'], :type => :boolean, :desc => "Don't update the repo, just bundle and migrate everywhere."
   option :ignore, type: :array, desc: "Directories matching this pattern will be ignored.  Example: 'app_up --ignore engines' will not bundle or migrate in a directory matching the word engines.  You can specify multiple patterns: 'app_up --ignore dir1 dir2"
+  option :branch, desc: "Specify which branch to rebase onto", default: 'master'
+  option :git_action, desc: "Specify what command to pass to git [Example: app_up --git-action 'pull --rebase origin branch_name'].  Defaults to 'pull --rebase origin master'."
 
   def up
     if options[:no_git]
       Upper.no_git(options)
     else
-      Upper.rebase_on_master!(options)
+      git_action = determine_git_action(options)
+      Upper.alter_repo!(options)
     end
   end
 
@@ -33,6 +36,15 @@ class CLI < Thor
   end
 
   default_task :up
+
+  private
+
+  def determine_git_action(options)
+    branch = options.delete(:branch) || 'master'
+    action = options.delete(:git_action) || "git pull --rebase origin #{branch}"
+
+    return action
+  end
 end
 
 CLI.start(ARGV)

@@ -11,7 +11,7 @@ fi
 __VERSION=`grep "s\.version" sfb_scripts.gemspec | tr -s ' ' | cut -d ' ' -f 4 | tr \" ' ' | tr -d ' '`
 
 gem build sfb_scripts.gemspec
-rvm @global do gem install sfb_scripts-${__VERSION}.gem
+gem install sfb_scripts-${__VERSION}.gem
 
 cd test/test_app
 

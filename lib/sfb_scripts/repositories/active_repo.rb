@@ -1,11 +1,11 @@
 class ActiveRepo < Repo
 
-  def rebase_on_master!
+  def alter!(git_command)
     shell.notify "\nRebasing current branch on master:"
     up do
       # will raise an error with merge conflicts
       begin
-        shell.run "git pull --rebase origin master"
+        shell.run "git #{git_command}"
       rescue ShellRunner::CommandFailureError
         puts "Unable to rebase.  Maybe you need to stash local changes, or there are rebase conflicts"
         puts `git status`
