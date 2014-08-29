@@ -6,11 +6,15 @@ class TestRunner
     @all_engines_param = env[:all_engines]
   end
 
+  # this could use some love
   def run(tests)
     if tests.is_one_test_method?
       run_method(tests.first)
-    elsif tests.in_one_file?
+    elsif tests.in_one_file? && tests.all? {|t| t.is_method? }
       shell.notify "Multiple matches in same file. Running that file."
+      run_files(tests)
+    elsif tests.in_one_file?
+      shell.notify "Matched one file."
       run_files(tests)
     elsif tests.in_one_engine? && tests.full_paths.size < 4 # hack: maybe should ask here?
       shell.notify "Multiple matches across files in same engine. Running those files."

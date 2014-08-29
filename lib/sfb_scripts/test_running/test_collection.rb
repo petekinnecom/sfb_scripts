@@ -2,20 +2,14 @@ class TestCollection
 
   MultipleWorkingDirectoriesError = Class.new(StandardError)
 
-  def self.parse(grep_result)
-    new(grep_result[:file], line: grep_result[:line]).parse
-  end
-
-
-  def self.from_file_path(file_path)
-    new(file_path).from_file_path
-  end
-
   attr_reader :tests
 
   def initialize(tests_data=[])
     @tests = tests_data.map do |test_data|
-      create_test_case(test_data)
+      TestCase.new(
+        full_path: test_data[:file],
+        line: test_data[:line]
+      )
     end.compact
   end
 
@@ -37,6 +31,10 @@ class TestCollection
 
   def [](*args)
     tests[*args]
+  end
+
+  def all?(&block)
+    tests.all?(&block)
   end
 
   def in_one_file?
@@ -83,25 +81,6 @@ class TestCollection
 
   def is_one_test_method?
     (size == 1) &&  tests.first.is_method?
-  end
-
-  private
-
-  def find_test_name(grepped_line)
-    return nil unless grepped_line && grepped_line.match(/^\s*def\s+test_/)
-
-    grepped_line.strip.gsub(/^\s*def /, '').strip
-  end
-
-  def create_test_case(test_data)
-    file_path = test_data[:file]
-    test_name = find_test_name(test_data[:line])
-    return nil if ! file_path.match(/_test\.rb/)
-
-    TestCase.new(
-      full_path: file_path,
-      test_name: test_name
-    )
   end
 
 end

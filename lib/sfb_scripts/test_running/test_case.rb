@@ -3,8 +3,10 @@ class TestCase
 
   attr_reader :working_dir, :relative_path, :test_name, :full_path
 
-  def initialize(full_path: raise, test_name: '')
-    @test_name = test_name
+  def initialize(full_path: raise, line: '')
+    raise 'Bad Test File' unless full_path.match(/_test\.rb/)
+
+    @test_name = test_name_from_grepped_line(line)
     @full_path = full_path
   end
 
@@ -18,7 +20,7 @@ class TestCase
   end
 
   def is_method?
-    @test_name && !! @test_name.match(/^test_/)
+    ! @test_name.nil?
   end
 
   def relative_path
@@ -27,5 +29,10 @@ class TestCase
 
   def raise_file_path_error
     raise TestDirectoryError.new("Can't find test's relative path")
+  end
+
+  def test_name_from_grepped_line(line)
+    return unless line && line.match(/^\s*def\s+test_/)
+    @test_name = line.strip.gsub(/^\s*def\s+/, '').strip
   end
 end
