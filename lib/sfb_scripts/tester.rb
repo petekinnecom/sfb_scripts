@@ -26,10 +26,10 @@ class Tester
     @env = env
   end
 
-  def find(inputs)
-    tests = TestFinder.find(inputs, env)
-    env[:test_runner].run(tests)
+  def find(input)
+    tests = TestFinder.find(input, env)
 
+    env[:test_runner].run(tests)
     env[:shell].warn "Giving up :("
   end
 

@@ -41,7 +41,9 @@ class NeedsManager
   end
 
   def shell_class
-    if options[:loud]
+    if options[:verbose]
+      VerboseShellRunner
+    elsif options[:loud]
       LoudShellRunner
     else
       ShellRunner

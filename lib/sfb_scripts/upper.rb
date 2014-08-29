@@ -6,28 +6,32 @@ class Upper
     [:shell, :repo, :bundler, :migrator]
   end
 
+  def self.with_defaults(options)
+    {loud: true}.merge(options)
+  end
+
   def self.rebase_on_master!(options)
-    env = NeedsManager.configure(:up, needs, options.merge(repo_type: :active))
+    env = NeedsManager.configure(:up, needs, with_defaults(options).merge(repo_type: :active))
     new(env).rebase_on_master!
   end
 
   def self.up_master!(options)
-    env = NeedsManager.configure(:up, needs, options.merge(repo_type: :active))
+    env = NeedsManager.configure(:up, needs, with_defaults(options).merge(repo_type: :active))
     new(env).up_master!
   end
 
   def self.no_git(options)
-    env = NeedsManager.configure(:up, needs, options.merge(repo_type: :lazy))
+    env = NeedsManager.configure(:up, needs, with_defaults(options).merge(repo_type: :lazy))
     new(env).no_git
   end
 
   def self.install_hooks(options)
-    env = NeedsManager.configure(:up, needs, options.merge(repo_type: :lazy))
+    env = NeedsManager.configure(:up, needs, with_defaults(options).merge(repo_type: :lazy))
     new(env).install_hooks
   end
 
   def self.pre_push_hook(git_command, options)
-    env = NeedsManager.configure(:up, needs, options.merge(repo_type: :lazy))
+    env = NeedsManager.configure(:up, needs, with_defaults(options).merge(repo_type: :lazy))
     new(env).pre_push_hook(git_command)
   end
 

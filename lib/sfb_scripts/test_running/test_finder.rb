@@ -1,7 +1,7 @@
 class TestFinder
 
   def self.find(query, env)
-    new(env, query.first).find
+    new(env, query).find
   end
 
   attr_accessor :shell, :repo, :query
