@@ -49,8 +49,7 @@ class NeedsManager
   end
 
   def create_folder_guard
-    denied_folders = []
-    denied_folders << 'engines' if ! options[:engines]
+    denied_folders = options[:ignore] || []
     env[:folder_guard] = FolderGuard.new(denied_folders)
   end
 

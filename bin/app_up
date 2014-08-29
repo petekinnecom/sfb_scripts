@@ -9,10 +9,10 @@ class CLI < Thor
   # REBASE
   #
 
-  desc "up", "Rebase your commits onto master. Bundle installs and migrates as needed.  Will terminate if conflicts are found."
+  desc :up, "Rebase your commits onto master. Bundle installs and migrates as needed.  Will terminate if conflicts are found.  After conflicts are resolved, run again with --no-rebase."
   option :loud, :type => :boolean, :desc => 'Pipe output to terminal or not (output is always piped to /tmp/app_up.log)'
-  option :no_git, aliases: ['--no-pull', '--no-rebase', '--all'], :type => :boolean, :desc => "Don't update the repo, just bundle and migrate everywhere."
-  option :engines, type: :boolean, default: false, desc: "Perform actions in engines as well"
+  option :no_git, aliases: ['--no-pull', '--no-rebase'], :type => :boolean, :desc => "Don't update the repo, just bundle and migrate everywhere."
+  option :ignore, type: :array, desc: "Directories matching this pattern will be ignored.  Example: 'app_up --ignore engines' will not bundle or migrate in a directory matching the word engines.  You can specify multiple patterns: 'app_up --ignore dir1 dir2"
 
   def up
     if options[:no_git]
