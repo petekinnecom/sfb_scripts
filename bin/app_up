@@ -5,6 +5,31 @@ require_relative '../lib/sfb_scripts/upper'
 
 class CLI < Thor
 
+  def initialize(args, options, config)
+    # reset --hard hack!
+    #
+    # if the -g option is passed,
+    # we concatenate the rest of the
+    # command into a single string.
+    #
+    # This prevents Thor from interpreting
+    # app_up -g reset --hard
+    # as having the flags -g and --hard
+    #
+    # (we want to ignore the --hard
+    # and just pass it on to git)
+
+    action_flag_index = options.find_index('-g') || options.find_index('--git-action') || options.find_index('--action')
+
+    if action_flag_index
+      new_options = options[0..action_flag_index]
+      new_options << options[action_flag_index+1 .. -1].join(' ')
+      options = new_options
+    end
+
+    super(args, options, config)
+  end
+
   #
   # REBASE
   #

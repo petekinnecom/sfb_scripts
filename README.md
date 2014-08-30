@@ -88,14 +88,14 @@ git_up pull origin master
 # app_up will run: git pull origin master
 ~~~
 
-Perhaps you're resetting hard for some reason.  Notice that `app_up` needs quotations, but `git_up` does not.  Go `git_up`!
+Perhaps you're resetting hard for some reason.
 
 ~~~bash
 # the following are equivalent:
 
-app_up --git-action 'reset --hard commitsha'
-app_up --action 'reset --hard commitsha'
-app_up -g 'reset --hard commitsha'
+app_up --git-action reset --hard commitsha
+app_up --action reset --hard commitsha
+app_up -g reset --hard commitsha
 git_up reset --hard
 
 # app_up will run: git reset --hard commitsha
