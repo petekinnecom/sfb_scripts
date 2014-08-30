@@ -31,7 +31,7 @@ class Repo
   end
 
   def grep(regex, file_pattern: '*')
-    results = shell.run("git grep '#{regex}' -- '#{file_pattern}'").split("\n")
+    results = shell.run("git grep --untracked '#{regex}' -- '#{file_pattern}'").split("\n")
     results.map do |result|
       interpret_grep_result(result)
     end
