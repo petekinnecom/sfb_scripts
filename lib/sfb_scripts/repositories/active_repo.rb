@@ -42,7 +42,8 @@ class ActiveRepo < Repo
   end
 
   def compare_with_reflog
-    old_sha = shell.run "git rev-parse HEAD@{1}"
+    old_sha = shell.run "git rev-parse HEAD@{2}"
+    set_files_changed(old_sha)
   end
 
   def fetch_origin

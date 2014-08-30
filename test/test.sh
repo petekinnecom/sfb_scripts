@@ -56,6 +56,21 @@ run_test `app_up --on-branch | egrep 'migrate_me' | wc -l` 0
 git reset --hard 9322a4766accf20d5398fd5f36ed98364d9e3488 > /dev/null
 run_test `app_up --action 'reset --hard 1392ec653a68e9566cd8d0c39cc8d6a192932576' | egrep 'bundle_me' | wc -l` 1
 
+# induce a rebase conflict
+# make sure we recover correctly
+
+git checkout rebase_conflicts > /dev/null
+git reset --hard 1392ec653a68e9566cd8d0c39cc8d6a192932576 > /dev/null
+echo '$' >> test/migrate_me/migrate/migration.rb
+git commit -am "temp"
+app_up --action rebase 0dd5ac842cd4a8dd75d8d3c37c6e5bb1c9a491c2
+echo 'conflicts fixed' > test/migrate_me/migrate/migration.rb
+git add --all > /dev/null
+git rebase --continue > /dev/null
+run_test `app_up --finish-rebase | egrep 'migrate_me' | wc -l` 2
+
+git reset --hard 0dd5ac842cd4a8dd75d8d3c37c6e5bb1c9a491c2
+
 
 git fetch origin > /dev/null
 git checkout feature_branch > /dev/null

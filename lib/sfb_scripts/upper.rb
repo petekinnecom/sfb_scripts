@@ -36,7 +36,7 @@ class Upper
   end
 
   def self.finish_rebase(options)
-    env = NeedsManager.configure(:up, needs, with_defaults(options).merge(repo_type: :lazy))
+    env = NeedsManager.configure(:up, needs, with_defaults(options).merge(repo_type: :active))
     new(env).finish_rebase
   end
 
