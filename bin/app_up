@@ -14,15 +14,15 @@ class CLI < Thor
   option :no_git, aliases: ['--no-pull', '--no-rebase'], :type => :boolean, :desc => "Don't update the repo, just bundle and migrate everywhere."
   option :ignore, type: :array, desc: "Directories matching this pattern will be ignored.  Example: 'app_up --ignore engines' will not bundle or migrate in a directory matching the word engines.  You can specify multiple patterns: 'app_up --ignore dir1 dir2"
   option :on_branch, desc: "Rebase the current branch onto it's upstream counterpart. [Example: While on branch (feature_branch), using the --on-branch flag will yield the git command: 'git pull --rebase origin feature_branch'", default: 'master', default: false
-  option :git_action, desc: "Specify what command to pass to git [Example: app_up --git-action 'pull --rebase origin branch_name'].  Defaults to 'pull --rebase origin master'."
+  option :action, desc: "Specify what command to pass to git [Example: app_up --git-action 'pull --rebase origin branch_name'].  Defaults to 'pull --rebase origin master'."
 
   def up
     if options[:no_git]
       Upper.no_git(options)
     elsif options[:on_branch]
       Upper.rebase_on_branch!(options)
-    elsif options[:git_action]
-      Upper.arbitrary_action!(options[:git_action], options)
+    elsif options[:action]
+      Upper.arbitrary_action!(options[:action], options)
     else
       Upper.rebase_on_master!(options)
     end

@@ -54,7 +54,7 @@ git reset --hard 1392ec653a68e9566cd8d0c39cc8d6a192932576 > /dev/null
 run_test `app_up --on-branch | egrep 'migrate_me' | wc -l` 0
 
 git reset --hard 9322a4766accf20d5398fd5f36ed98364d9e3488 > /dev/null
-run_test `app_up --git-action 'reset --hard 1392ec653a68e9566cd8d0c39cc8d6a192932576' | egrep 'bundle_me' | wc -l` 1
+run_test `app_up --action 'reset --hard 1392ec653a68e9566cd8d0c39cc8d6a192932576' | egrep 'bundle_me' | wc -l` 1
 
 
 git fetch origin > /dev/null

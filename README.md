@@ -16,9 +16,17 @@ Super Fun Bonus Scripts Turbo contains two scripts that are designed for rails a
 
 #installation
 
-1. I suggest installing the gem to your global gemset, so that you can use it in any project:
+~~~
+bash
+gem install sfb_scripts
+~~~
 
-        rvm @global do gem install sfb_scripts
+#updating
+
+~~~
+bash
+gem update sfb_scripts
+~~~
 
 ---
 
