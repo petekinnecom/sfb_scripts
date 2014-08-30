@@ -35,13 +35,18 @@ class Upper
     new(env).no_git
   end
 
+  def self.finish_rebase(options)
+    env = NeedsManager.configure(:up, needs, with_defaults(options).merge(repo_type: :lazy))
+    new(env).finish_rebase
+  end
+
   def self.install_hooks(options)
     env = NeedsManager.configure(:up, needs, with_defaults(options).merge(repo_type: :lazy))
     new(env).install_hooks
   end
 
   def self.pre_push_hook(git_command, options)
-    env = NeedsManager.configure(:up, needs, with_defaults(options).merge(repo_type: :lazy))
+    env = NeedsManager.configure(:up, needs, with_defaults(options).merge(repo_type: :active))
     new(env).pre_push_hook(git_command)
   end
 
@@ -68,6 +73,12 @@ class Upper
 
   def no_git
     env[:shell].notify "\nBundling and migrating without checking diffs:"
+    bundler.bundle_where_necessary
+    migrator.migrate_where_necessary
+  end
+
+  def finish_rebase
+    repo.compare_with_reflog
     bundler.bundle_where_necessary
     migrator.migrate_where_necessary
   end
