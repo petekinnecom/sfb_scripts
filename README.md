@@ -1,6 +1,4 @@
-[   low quality readme below : /   ]
-
-#Super Fun Bonus Scripts!
+#Super Fun Bonus Scripts!  ---->
 
 Ever want to load up your sever and look at something, so you start the server, but it's like, _noooo, I'm not going to load until you bundle install_, so you type 'bundle install' like the good natured developer you are and when that finishes, you're like, _Okay, let's start this server_, so you type 'rails s' or something and your stick-in-the-mud computer is all, _pssh, you haven't even migrated yet_ and so you're like, fine, I'll migrate, so you type 'rake db:migrate', and you finally start your server, but then you want to run a test, so you run the test and your computer say, _ahahahahaha, no.  You haven't migrated your **test** database yet_ and then you cry.  YOU CRY.
 
@@ -16,15 +14,13 @@ Super Fun Bonus Scripts Turbo contains two scripts that are designed for rails a
 
 #installation
 
-~~~
-bash
+~~~bash
 gem install sfb_scripts
 ~~~
 
 #updating
 
-~~~
-bash
+~~~bash
 gem update sfb_scripts
 ~~~
 
@@ -42,8 +38,7 @@ __Rebasing onto your upstream branch__:
 
 Maybe you're working on a branch named _FeatureBranch_ and you'd like to rebase onto origin/FeatureBranch.  Run:
 
-~~~
-bash
+~~~bash
 app_up --on-branch
 ~~~
 
@@ -51,8 +46,7 @@ __Run every command everywhere__
 
 Sometimes things are in bad state and you just want to bundle and migrate everything, regardless of what state your git repo is in. Run:
 
-~~~
-bash
+~~~bash
 app_upp --no-git
 ~~~
 
@@ -60,69 +54,58 @@ __Ignore certain folders__
 
 Perhaps you have a dummy application inside of your repo that other people use, but you don't really care about.  Tell `app_up` to ignore that folder by passing a regex with the `--ignore` option (don't forget surrounding quotes if needed).  In my project, we have a lot of engines that I usually don't care to deal with.  So I run:
 
-~~~
-bash
+~~~bash
 app_up --ignore engines
 ~~~
 
 ###But wait! There's more!
 
-You can run __any__ git command and have `app_up` decide where to bundle and migrate.  Simply use the `--action [git_action]` option to run your command.
+You can run __any__ git command and have `app_up` decide where to bundle and migrate.  Simply use the `--action git_action` option to run your command.  There's even a handy shorter version, called `git_up`!
 
 Like when you're checking out somebody elses branch:
 
-~~~
-bash
+~~~bash
 # the following are equivalent:
 
 app_up --git-action checkout OtherBranch
 app_up --action checkout OtherBranch
 app_up -g checkout OtherBranch
+git_up checkout OtherBranch
 
 # app_up will run: git checkout OtherBranch
 ~~~
 
 Maybe you'd prefer to pull without the rebase:
 
-~~~
-bash
+~~~bash
 # the following are equivalent:
 
 app_up --git-action pull origin master
 app_up --action pull origin master
 app_up -g pull origin master
+git_up pull origin master
 
 # app_up will run: git pull origin master
 ~~~
 
-Perhaps you're resetting hard for some reason.  Notice the need for quotations here!  The need for these will be fixed in future versions. (Thor is interpretting the --hard as an `app_up` option rather than a git option...)
+Perhaps you're resetting hard for some reason.  Notice that `app_up` needs quotations, but `git_up` does not.  Go `git_up`!
 
-~~~
-bash
+~~~bash
 # the following are equivalent:
 
 app_up --git-action 'reset --hard commitsha'
 app_up --action 'reset --hard commitsha'
 app_up -g 'reset --hard commitsha'
+git_up reset --hard
 
 # app_up will run: git reset --hard commitsha
 ~~~
 
-###That's a lot of typing!
-
-There's a small wrapper script installed called `git_up`.  This allows you to run arbitrary git commands through `app_up` more easily:
-
-~~~
-bash
-git_up checkout origin/master
-
-#=> app_up --git-action 'checkout origin/master'
-~~~
+###AUTOCOMPLETE?  WHAT IS THAT.
 
 By adding the following to your `.bash_profile`, you can get autocomplete for `git_up` (probably only works if you're using bash\_completion as installed by homebrew):
 
-~~~
-bash
+~~~bash
 __git_complete git_up _git
 ~~~
 
@@ -150,30 +133,26 @@ The goal of the find' command is to take a search string, find some tests, and r
 
 Here are some basic examples:
 
-~~~
-bash
+~~~bash
 test_runner find test_method_name
 
 #=> ruby -I test test/unit/test_file.rb --name=test_method_name
 
 ~~~
 
-~~~
-bash
+~~~bash
 test_runner find test_file.rb
 
 #=> ruby -I test test/unit/test_file.rb
+~~~
 
-~~~
-~~~
-bash
+~~~ bash
 test_runner find test/unit/test_file.rb
 
 #=> ruby -I test test/unit/test_file.rb
 ~~~
 
-~~~
-bash
+~~~bash
 test_runner find '^any_.*[rR]egex?'
 
 #=> runs up to 4 tests matching that regex
@@ -191,14 +170,13 @@ The test finder prefers certain matches over others.  It prefers matches in this
 
 I recommend adding the following the following alias to your `.bash_profile`:
 
-~~~
-bash
+~~~bash
 alias t='test_runner find'
 ~~~
+
 This allows for a much more convenient way of running tests:
 
-~~~
-bash
+~~~bash
 t test_method_name
 #=> ruby -I test test/unit/test_file.rb --name=test_method_name
 
