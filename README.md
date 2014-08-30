@@ -10,7 +10,7 @@ Super Fun Bonus Scripts Turbo contains two scripts that are designed for rails a
 
 - __app\_up:__ Bundles and migrates only where needed after running a git command.
 
-- __test\_runner:__ Easily run tests from the command line!  Like REALLY EASILY.
+- __test\_runner:__ Easily run tests from the command line!  Like REALLY EASILY.  Doesn't matter what app/engine they are in.  `test_runner` will find them and it will run them.
 
 ---
 
@@ -108,12 +108,31 @@ app_up -g 'reset --hard commitsha'
 # app_up will run: git reset --hard commitsha
 ~~~
 
+###That's a lot of typing!
+
+There's a small wrapper script installed called `git_up`.  This allows you to run arbitrary git commands through `app_up` more easily:
+
+~~~
+bash
+git_up checkout origin/master
+
+#=> app_up --git-action 'checkout origin/master'
+~~~
+
+By adding the following to your `.bash_profile`, you can get autocomplete for `git_up` (probably only works if you're using bash\_completion as installed by homebrew):
+
+~~~
+bash
+__git_complete git_up _git
+~~~
+
 
 ###what's next for app_up?
 
 - A configuration file so you can set your own defaults.
-- A nicer shortcut so that you can easily wrap all your git movements with app_up. (i.e. `gup co branch` or `gup reset --hard origin/master`, with autocomplete, etc).
+- A nicer shortcut so that you can easily wrap all your git movements with app\_up. (i.e. `gup co branch` or `gup reset --hard origin/master`, with autocomplete, etc).
 - Easily recover from failed rebase/merge. Compare with reflog data to decide.
+- Figure out how people can write their own `git_up` so I can remove it from the repo.
 
 ----
 
