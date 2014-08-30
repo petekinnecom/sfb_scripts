@@ -10,9 +10,19 @@ class Upper
     {loud: true}.merge(options)
   end
 
-  def self.alter_repo!(git_command, options)
+  def self.arbitrary_action!(git_command, options)
     env = NeedsManager.configure(:up, needs, with_defaults(options).merge(repo_type: :active))
-    new(env).alter_repo!(git_command)
+    new(env).arbitrary_action!(git_command)
+  end
+
+  def self.rebase_on_branch!(options)
+    env = NeedsManager.configure(:up, needs, with_defaults(options).merge(repo_type: :active))
+    new(env).arbitrary_action!("pull --rebase origin #{env[:repo].current_branch}")
+  end
+
+  def self.rebase_on_master!(options)
+    env = NeedsManager.configure(:up, needs, with_defaults(options).merge(repo_type: :active))
+    new(env).arbitrary_action!("pull --rebase origin master")
   end
 
   def self.up_master!(options)
@@ -50,7 +60,7 @@ class Upper
     migrator.migrate_where_necessary
   end
 
-  def alter_repo!(git_command)
+  def arbitrary_action!(git_command)
     repo.alter!(git_command)
     bundler.bundle_where_necessary
     migrator.migrate_where_necessary
