@@ -8,7 +8,10 @@ class TestRunner
 
   # this could use some love
   def run(tests)
-    if tests.is_one_test_method?
+    if tests.empty?
+      shell.warn "Unable to identify any tests."
+      exit
+    elsif tests.is_one_test_method?
       run_method(tests.first)
     elsif tests.in_one_file? && tests.all? {|t| t.is_method? }
       shell.notify "Multiple matches in same file. Running that file."
