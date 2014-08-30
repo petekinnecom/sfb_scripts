@@ -34,6 +34,12 @@ If there is a conflict during the rebase process, the script will terminate.  Th
 
 Although the default behavior of `app_up` is to rebase on origin/master, there are a number of flags you can use to ensure that `app_up` does what you want.
 
+__Rebasing your branch onto origin/master__:
+
+~~~bash
+app_up
+~~~
+
 __Rebasing onto your upstream branch__:
 
 Maybe you're working on a branch named _FeatureBranch_ and you'd like to rebase onto origin/FeatureBranch.  Run:
@@ -42,12 +48,12 @@ Maybe you're working on a branch named _FeatureBranch_ and you'd like to rebase 
 app_up --on-branch
 ~~~
 
-__Run every command everywhere__
+__Just bundle and migrate everywhere__
 
 Sometimes things are in bad state and you just want to bundle and migrate everything, regardless of what state your git repo is in. Run:
 
 ~~~bash
-app_upp --no-git
+app_up --no-git
 ~~~
 
 __Ignore certain folders__
