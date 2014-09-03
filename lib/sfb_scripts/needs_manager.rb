@@ -13,7 +13,8 @@ class NeedsManager
   def initialize(task, needs, options)
     @log_file = log_file_for(task)
     @needs = needs
-    @options = options
+    # symbolize_keys
+    @options = options.inject({}){|results,(k,v)| results[k.to_sym] = v; results}
     @env = {}
   end
 

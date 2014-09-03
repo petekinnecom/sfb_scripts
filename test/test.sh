@@ -42,6 +42,9 @@ run_test `app_up --no-git | egrep 'bundle_me|migrate_me' | wc -l` 3
 git reset --hard fad523ac3479099dda2e16dc4ac642e6e991a751 > /dev/null
 run_test `app_up | egrep 'bundle_me|migrate_me' | wc -l` 3
 
+git reset --hard fad523ac3479099dda2e16dc4ac642e6e991a751 > /dev/null
+run_test `app_up --ignore bundle | egrep 'bundle_me|migrate_me' | wc -l` 2
+
 # checkout test branch
 # move back one
 # rebase on branch
