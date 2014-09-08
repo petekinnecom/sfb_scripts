@@ -13,6 +13,8 @@ class TestFinder
   end
 
   def find
+    return tests_found_by_absolute_path if query.match(Repo.root_dir)
+
     return tests_found_by_name if tests_found_by_name.present?
 
     return tests_found_by_file_name if tests_found_by_file_name.present?
@@ -23,6 +25,10 @@ class TestFinder
   end
 
   private
+
+  def tests_found_by_absolute_path
+    TestCollection.new([file: query.gsub(Repo.root_dir, '')])
+  end
 
   def tests_found_by_name
     @tests_found_by_name ||=

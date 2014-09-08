@@ -13,7 +13,7 @@ class TestCase
   def working_dir
     @working_dir ||=
       if full_path.match(/^(.*)test\//)
-        "./#{full_path.match(/^(.*)test\//)[1]}"
+        File.join(".", full_path.match(/^(.*)test\//)[1])
       else
         raise TestDirectoryError.new("Can't find test's working directory")
       end
