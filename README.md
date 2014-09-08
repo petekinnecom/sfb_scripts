@@ -12,6 +12,17 @@ Super Fun Bonus Scripts Turbo contains two scripts that are designed for rails a
 
 ---
 
+__what's new__
+
+1.3:
+
+- Can run tests using absolute path.
+- Fixed crash when searching by file name.
+
+1.2:
+
+- Full regex searches allowed.  Can now use a test class to search for test (e.g. ThingTest)
+
 #installation
 
 ~~~bash
