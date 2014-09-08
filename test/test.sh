@@ -24,6 +24,9 @@ run_test `test_runner find thing_test | grep thing_test_success | wc -l` 1
 
 run_test `test_runner find ThingTest | grep thing_test_success | wc -l` 1
 
+git reset --hard dcb5c7bc8297ef96222ac5af27075e26dcb661b0 > /dev/null
+run_test `test_runner find thing*.rb | grep thing_test_success | wc -l` 1
+
 git reset --hard fad523ac3479099dda2e16dc4ac642e6e991a751 > /dev/null
 run_test `test_runner find multiple | grep multiple_matches_success | wc -l` 2
 
@@ -66,7 +69,7 @@ git checkout rebase_conflicts > /dev/null
 git reset --hard 1392ec653a68e9566cd8d0c39cc8d6a192932576 > /dev/null
 echo '$' >> test/migrate_me/migrate/migration.rb
 git commit -am "temp"
-app_up --action rebase 0dd5ac842cd4a8dd75d8d3c37c6e5bb1c9a491c2
+app_up --action rebase 0dd5ac842cd4a8dd75d8d3c37c6e5bb1c9a491c2 > /dev/null
 echo 'conflicts fixed' > test/migrate_me/migrate/migration.rb
 git add --all > /dev/null
 git rebase --continue > /dev/null

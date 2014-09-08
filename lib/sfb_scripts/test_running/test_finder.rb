@@ -49,7 +49,7 @@ class TestFinder
     @tests_found_by_file_name ||=
       begin
         files = []
-        files << repo.find_files(query).map {|f| {:file => f} }
+        files << repo.find_files(query).select {|f| f.match /_test\.rb\Z/ }.map {|f| {:file => f} }
         files.flatten!
         TestCollection.new(files)
       end
