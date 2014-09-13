@@ -2,7 +2,7 @@ require_relative 'dependency_loader'
 
 class NeedsManager
 
-  BUNDLER_MAX_THREAD_COUNT = 2
+  BUNDLER_MAX_THREAD_COUNT = 4
   MIGRATOR_MAX_THREAD_COUNT = 8
 
   def self.configure(task, needs, options)
