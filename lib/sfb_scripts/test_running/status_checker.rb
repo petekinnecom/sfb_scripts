@@ -37,11 +37,11 @@ class StatusChecker
   private
 
   def test_files
-    file_names.select {|f| f.match(/_test$/) }
+    TestFilter.select_tests(file_names)
   end
 
   def non_test_files
-    file_names.reject {|f| f.match(/_test$/) }
+    TestFilter.reject_tests(file_names)
   end
 
   def file_names

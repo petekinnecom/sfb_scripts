@@ -6,6 +6,7 @@ class TestCollection
 
   def initialize(tests_data=[])
     @tests = tests_data.map do |test_data|
+      test_data = {file: test_data} if test_data.is_a?(String)
       TestCase.new(
         full_path: test_data[:file],
         line: test_data[:line]

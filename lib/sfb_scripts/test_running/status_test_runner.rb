@@ -13,7 +13,7 @@ class StatusTestRunner
   end
 
   def status
-    files = repo.status_files.map {|f| {:file => f} }
+    files = TestFilter.select_tests(repo.status_files)
     @tests = TestCollection.new(files)
 
     if tests.include_selenium?
