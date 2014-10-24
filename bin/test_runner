@@ -22,6 +22,7 @@ class CLI < Thor
   desc "find", <<-DESC
     Find tests and run them. By trying to match an individual test or the name of a test file(s).
   DESC
+  option :timid, type: :boolean, desc: "Always ask user which tests to run if multiple test files are found. Defaults to false", default: false
   def find(input)
     if input == '--help'
       puts "use 'test_runner --help find' to see the help"
