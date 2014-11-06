@@ -6,34 +6,44 @@ class TestRunner
     @all_engines_param = env[:all_engines]
   end
 
+  # Hack: this could use *a lot* of love
   # this could use some love
   def run(tests)
+
     if tests.empty?
       shell.warn "Unable to identify any tests."
       exit
+
     elsif tests.is_one_test_method?
-      run_method(tests.first)
+      test = tests.first
+      run_method(path: test.relative_path, name: test.test_name, dir: test.working_dir)
+
     elsif tests.in_one_file? && tests.all? {|t| t.is_method? }
-      shell.notify "Multiple matches in same file. Running that file."
+      shell.notify "Multiple matches in same file. Running those tests"
+      test = tests.first
+      run_method(path: test.relative_path, name: tests.query, dir: test.working_dir)
+
+    elsif tests.in_one_file? #catches regex that matched a test file or other regex that matched in the body
+      shell.notify "Matched one file. Running that file."
       run_files(tests)
-    elsif tests.in_one_file?
-      shell.notify "Matched one file."
-      run_files(tests)
+
     elsif tests.in_one_engine? && tests.full_paths.size < 4 # hack: maybe should ask here?
       shell.notify "Multiple matches across files in same engine. Running those files."
       run_files(tests)
+
     else
       shell.warn 'Found too many tests:'
       tests[0..10].each {|t| shell.notify "#{t.full_path}: #{t.test_name}" }
       shell.notify '...'
       exit
+
     end
   end
 
-  def run_method(test)
-    test_runner = named_test_runner(test.working_dir)
+  def run_method(path:, name:, dir:)
+    test_runner = named_test_runner(dir)
 
-    shell.exec("#{test_runner} #{test.relative_path} --name=#{test.test_name}", dir: test.working_dir)
+    shell.exec("#{test_runner} #{path} --name=/#{name}/", dir: dir)
   end
 
   def run_files(tests)

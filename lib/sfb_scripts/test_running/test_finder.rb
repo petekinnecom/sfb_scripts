@@ -47,7 +47,7 @@ class TestFinder
           # git grep returns 1 if no results found
         end
 
-        TestCollection.new(test_matches)
+        TestCollection.new(test_matches, query: query)
       end
   end
 

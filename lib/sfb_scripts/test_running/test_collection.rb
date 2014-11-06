@@ -2,9 +2,10 @@ class TestCollection
 
   MultipleWorkingDirectoriesError = Class.new(StandardError)
 
-  attr_reader :tests
+  attr_reader :tests, :query
 
-  def initialize(tests_data=[])
+  def initialize(tests_data=[], query: '')
+    @query = query
     @tests = tests_data.map do |test_data|
       test_data = {file: test_data} if test_data.is_a?(String)
       TestCase.new(
