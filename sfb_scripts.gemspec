@@ -1,6 +1,10 @@
+# -*- encoding: utf-8 -*-
+$:.push File.expand_path("../lib", __FILE__)
+require 'sfb_scripts/version'
+
 Gem::Specification.new do |s|
   s.name = "sfb_scripts"
-  s.version           = "1.6"
+  s.version           = SfbScripts::VERSION
 
   s.authors           = ["Pete Kinnecom"]
   s.description       = "Easily update your rails app and run tests from command line"
