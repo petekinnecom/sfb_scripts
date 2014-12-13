@@ -83,7 +83,8 @@ class NeedsManager
   def create_test_runner
     env[:test_runner] = TestRunner.new(
       shell: env[:shell],
-      all_engines: options[:all_engines]
+      all_engines: options[:all_engines],
+      always_ask_before_grouping_tests: options[:timid]
     )
   end
 

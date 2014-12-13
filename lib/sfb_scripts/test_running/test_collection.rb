@@ -7,16 +7,25 @@ class TestCollection
   def initialize(tests_data=[], query: '')
     @query = query
     @tests = tests_data.map do |test_data|
-      test_data = {file: test_data} if test_data.is_a?(String)
-      TestCase.new(
-        full_path: test_data[:file],
-        line: test_data[:line]
-      )
+      if test_data.is_a? TestCase
+        test_data
+      else
+        test_data = {file: test_data} if test_data.is_a?(String)
+
+        TestCase.new(
+          full_path: test_data[:file],
+          line: test_data[:line]
+        )
+      end
     end.compact
   end
 
   def empty?
     tests.empty?
+  end
+
+  def uniq!
+    @tests = @tests.uniq {|e| "#{e.full_path} #{e.test_name} #{e.working_dir}" }
   end
 
   def present?

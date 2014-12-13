@@ -39,6 +39,19 @@ class ShellRunner
     return answer != 'n'
   end
 
+  def get_number_list_for_question(question)
+    warn question 
+    answer = STDIN.gets.strip
+
+    answer.split(',').map do |term|
+      if term.include?('-')
+        (term.split('-')[0].to_i..term.split('-')[1].to_i).to_a
+      else
+        term.to_i
+      end
+    end.flatten
+  end
+
   def deny?(question)
     ! confirm?(question)
   end

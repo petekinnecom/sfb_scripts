@@ -1,9 +1,10 @@
 class TestRunner
 
-  attr_reader :shell, :all_engines_param
+  attr_reader :shell, :all_engines_param, :always_ask_before_grouping_tests
   def initialize(env)
     @shell = env[:shell]
     @all_engines_param = env[:all_engines]
+    @always_ask_before_grouping_tests = env[:always_ask_before_grouping_tests]
   end
 
   # Hack: this could use *a lot* of love
@@ -17,7 +18,8 @@ class TestRunner
     elsif tests.is_one_test_method?
       test = tests.first
       run_method(path: test.relative_path, name: test.test_name, dir: test.working_dir)
-
+    elsif always_ask_before_grouping_tests
+      ask_user_which_tests_to_run(tests)
     elsif tests.in_one_file? && tests.all? {|t| t.is_method? }
       shell.notify "Multiple matches in same file. Running those tests"
       test = tests.first
@@ -32,18 +34,29 @@ class TestRunner
       run_files(tests)
 
     else
-      shell.warn 'Found too many tests:'
-      tests[0..10].each {|t| shell.notify "#{t.full_path}: #{t.test_name}" }
-      shell.notify '...'
-      exit
-
+      ask_user_which_tests_to_run(tests)
     end
   end
 
   def run_method(path:, name:, dir:)
     test_runner = named_test_runner(dir)
-
     shell.exec("#{test_runner} #{path} --name=/#{name}/", dir: dir)
+  end
+
+  def ask_user_which_tests_to_run(tests)
+      shell.warn 'Found too many tests. Please choose which matches you would like to run:'
+
+      tests.uniq!.each_with_index do |t, index| 
+        shell.notify "(#{index}) #{t.full_path}: #{t.test_name}" 
+      end
+
+      tests_to_run = shell.get_number_list_for_question('Please enter the match numbers you would like to run(comma seperated)')
+
+      new_tests = tests_to_run.map do |index|
+        tests[index]
+      end
+      @always_ask_before_grouping_tests = false
+      run(TestCollection.new(new_tests))
   end
 
   def run_files(tests)
