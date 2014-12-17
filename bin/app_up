@@ -41,6 +41,7 @@ class CLI < Thor
   option :on_branch, desc: "Rebase the current branch onto it's upstream counterpart. [Example: While on branch (feature_branch), using the --on-branch flag will yield the git command: 'git pull --rebase origin feature_branch'", default: 'master', default: false
   option :git_action, aliases: ['--action', '-g'], type: :array, desc: "Specify what command to pass to git [Example: app_up --git-action 'pull --rebase origin branch_name'].  Defaults to 'pull --rebase origin master'."
   option :finish_rebase, aliases: ['--finish-merge'], type: :boolean, desc: "Recovers from rebase or merge conflicts"
+  option :reset, aliases: ['--drop-dbs'], type: :boolean, desc: "Drop and recreate all databases"
 
   def up
     if options[:no_git]

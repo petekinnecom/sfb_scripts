@@ -1,10 +1,11 @@
 class Migrator
-  attr_accessor :shell, :repo, :queue, :folder_guard
+  attr_accessor :shell, :repo, :queue, :folder_guard, :drop_dbs
 
-  def initialize(repo: raise, shell: raise, queue: raise, folder_guard: raise)
+  def initialize(repo:, shell:, queue:, folder_guard:, drop_dbs: false)
     @shell = shell
     @repo = repo
     @queue = queue
+    @drop_dbs = drop_dbs
     @folder_guard = folder_guard
   end
 
@@ -12,7 +13,7 @@ class Migrator
     shell.notify "\nMigrating:"
     migrations.each do |migration|
       queue.enqueue_b do
-        shell.run "RAILS_ENV=#{migration[:env]} bundle exec rake db:create 2> /dev/null; RAILS_ENV=#{migration[:env]} bundle exec rake db:migrate", dir: migration[:dir]
+        shell.run "RAILS_ENV=#{migration[:env]} bundle exec rake #{drop_dbs ? 'db:drop' : ''} db:create 2> /dev/null;\n RAILS_ENV=#{migration[:env]} bundle exec rake db:migrate", dir: migration[:dir]
       end
     end
     queue.join

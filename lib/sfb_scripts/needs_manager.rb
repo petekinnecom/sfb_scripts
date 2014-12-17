@@ -77,7 +77,7 @@ class NeedsManager
 
   def create_migrator
     queue = WorkQueue.new(MIGRATOR_MAX_THREAD_COUNT, nil)
-    env[:migrator] = Migrator.new(shell: env[:shell], repo: env[:repo], queue: queue, folder_guard: env[:folder_guard])
+    env[:migrator] = Migrator.new(shell: env[:shell], repo: env[:repo], queue: queue, folder_guard: env[:folder_guard], drop_dbs: options[:reset])
   end
 
   def create_test_runner
