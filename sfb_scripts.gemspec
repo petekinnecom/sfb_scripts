@@ -18,9 +18,8 @@ Gem::Specification.new do |s|
 
   s.files             = `git ls-files -- lib`.split("\n")
 
-  s.executables       << "test_runner"
-
   s.add_dependency("thor", [">= 0.19", "< 1.0"])
-  s.add_dependency("app_up", [">= 1.0.2", "< 2.0"])
+  s.add_dependency("app_up", ["1.0.2"])
+  s.add_dependency("test_run", ["0.0.3"])
 end
 
