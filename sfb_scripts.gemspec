@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
   s.name = "sfb_scripts"
-  s.version           = "1.9.1"
+  s.version           = "2.0.0"
 
   s.authors           = ["Pete Kinnecom"]
   s.description       = "Easily update your rails app and run tests from command line"
@@ -16,6 +16,6 @@ Gem::Specification.new do |s|
   s.files             = []
 
   s.add_dependency("app_up", "1.0.2")
-  s.add_dependency("test_launcher", "0.1.0")
+  s.add_dependency("test_launcher", "1.0.0")
 end
 
